@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx src/index.ts",
-    "deploy:local": "tsx src/Scripts/DeployLocal.ts"
+    "deploy:local": "tsx src/Scripts/DeployLocal.ts",
+    "deploy:global": "tsx src/Scripts/DeployGlobal.ts",
+    "deploy:clear": "tsx src/Scripts/ClearAll.ts"
   },
   "keywords": [],
   "author": "",
