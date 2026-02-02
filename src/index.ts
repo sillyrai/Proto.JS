@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import Logger from './Modules/Logger';
 import fs from 'fs';
+import mongoose from 'mongoose';
 
 dotenv.config({quiet: true});
 
@@ -17,18 +18,6 @@ manager.on('shardCreate', shard => Logger.info(`Launched shard ${shard.id}`));
 Logger.debug('Starting shard manager...');
 manager.spawn();
 
-// During development each time this script is ran, some change has been most likely made, so we incriment the patch number in config.version.patch
-const configPath = path.join(__dirname, 'config.json');
-if (fs.existsSync(configPath)) {
-    const configData = fs.readFileSync(configPath, 'utf-8');
-    const config = JSON.parse(configData);
-    if (config.version && typeof config.version.patch === 'number') {
-        config.version.patch += 1;
-        fs.writeFileSync(configPath, JSON.stringify(config, null, 4), 'utf-8');
-        Logger.info(`Incremented patch version to ${config.version.patch}`);
-    } else {
-        Logger.warn('Version information not found in config.json');
-    } 
-} else {
-    Logger.warn('config.json file not found, skipping version increment');
-}
+mongoose.connect(process.env.MONGODB_URI || '', {})
+    .then(() => Logger.success('Connected to MongoDB'))
+    .catch(err => Logger.error(`Failed to connect to MongoDB: ${err}`));

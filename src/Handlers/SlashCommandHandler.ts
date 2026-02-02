@@ -20,6 +20,7 @@ export default function(client: Client) {
         for (const item of items) {
             const fullPath = path.join(dir, item.name);
             if (item.isDirectory()) {
+                if (item.name.toLowerCase() === 'subcommands') continue;
                 files = files.concat(getCommandFiles(fullPath));
             } else if (item.isFile() && (item.name.endsWith('.ts') || item.name.endsWith('.js'))) {
                 files.push(fullPath);
@@ -64,6 +65,8 @@ export default function(client: Client) {
 
         try {
             await command.execute(interaction);
+            let args = interaction.options.data.map(option => `${chalk.green(option.name)}:${chalk.greenBright(option.value)}`).join(", ");
+            Logger.debug(`${interaction.user.tag} ran ${chalk.yellow("/"+interaction.commandName)} ${args}`);
         } catch (error) {
             Logger.error(`Error executing ${interaction.commandName}: ${error}`);
             if (interaction.replied || interaction.deferred) {
