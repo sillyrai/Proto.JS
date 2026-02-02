@@ -23,7 +23,7 @@ module.exports = {
         const parsedTime = TextParser.TimeStringParser(durationInput);
 
         if(!parsedTime) {
-            await interaction.followUp({
+            await interaction.editReply({
                 content: "Invalid duration format. Please use formats like 10m, 1h, 1d, or combinations like 3d5h.",
             });
             return;
@@ -31,13 +31,13 @@ module.exports = {
 
         const maxMuteDuration = 28 * 24 * 60 * 60 * 1000; // 28 days in milliseconds
         if(parsedTime > maxMuteDuration) {
-            await interaction.followUp({
+            await interaction.editReply({
                 content: "The maximum mute duration is 28 days.",
             });
             return;
         }
         if(parsedTime < 1000) {
-            await interaction.followUp({
+            await interaction.editReply({
                 content: "The minimum mute duration is 1 second.",
             });
             return;
@@ -46,14 +46,14 @@ module.exports = {
         let member = await interaction.guild?.members.fetch(user.id);
 
         if (!member) {
-            await interaction.followUp({
+            await interaction.editReply({
                 content: "User not found in this server.",
             });
             return;
         }
 
         if(!member.moderatable){
-            await interaction.followUp({
+            await interaction.editReply({
                 content: "I cannot mute this user. They may have higher permissions than me.",
             });
             return;
@@ -72,7 +72,7 @@ module.exports = {
             .setThumbnailAccessory(new ThumbnailBuilder()
                 .setURL(member.displayAvatarURL() || '')));
 
-        await interaction.followUp({
+        await interaction.editReply({
             components: [ResponseMessage],
             flags: [MessageFlags.IsComponentsV2]
         });

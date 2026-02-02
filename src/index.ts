@@ -2,8 +2,6 @@ import { ShardingManager } from 'discord.js';
 import dotenv from 'dotenv';
 import path from 'path';
 import Logger from './Modules/Logger';
-import fs from 'fs';
-import mongoose from 'mongoose';
 
 dotenv.config({quiet: true});
 
@@ -17,7 +15,3 @@ manager.on('shardCreate', shard => Logger.info(`Launched shard ${shard.id}`));
 
 Logger.debug('Starting shard manager...');
 manager.spawn();
-
-mongoose.connect(process.env.MONGODB_URI || '', {})
-    .then(() => Logger.success('Connected to MongoDB'))
-    .catch(err => Logger.error(`Failed to connect to MongoDB: ${err}`));

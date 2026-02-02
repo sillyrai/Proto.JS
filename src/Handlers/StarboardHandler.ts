@@ -1,0 +1,97 @@
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, ContainerBuilder, Events, FileBuilder, MediaGalleryBuilder, MediaGalleryItemBuilder, MessageFlags, MessageReaction, PartialMessageReaction, PartialUser, SectionBuilder, SeparatorBuilder, TextChannel, TextDisplayBuilder, ThumbnailBuilder, User } from "discord.js";
+import Logger from "../Modules/Logger";
+import Database from "../Modules/Database";
+
+async function PostToStarboard(reaction: MessageReaction | PartialMessageReaction, starboardChannel:TextChannel, dbGuild:any) {
+    let message = await reaction.message.fetch();
+
+    // Check if guild.starboard.posted already has this message ID
+    if(dbGuild.starboard.posted.includes(message.id)) return;
+    // Add message ID to guild.starboard.posted and save
+    dbGuild.starboard.posted.push(message.id);
+    await dbGuild.save();
+
+    // Create the starboard embed/message
+    let Container = new ContainerBuilder();
+    Container.addSectionComponents(new SectionBuilder()
+        .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.author?.displayAvatarURL() || ''))
+        .addTextDisplayComponents(new TextDisplayBuilder().setContent(`# ${dbGuild.starboard.emoji} Starboard\n## Post by **${message.author}**`))
+    );
+    Container.addSeparatorComponents(new SeparatorBuilder())
+
+    if(message.content) {
+        Container.addTextDisplayComponents(new TextDisplayBuilder().setContent(message.content));
+    }
+    let MediaGallery = new MediaGalleryBuilder()
+    let MediaText = "";
+    if(message.attachments.size > 0)
+        for(const attachment of message.attachments.values()){
+                if(attachment.contentType?.startsWith('image/') || attachment.contentType?.startsWith('video/'))
+                    MediaGallery.addItems(new MediaGalleryItemBuilder().setURL(attachment.url));
+                MediaText += `\n[${attachment.name}](${attachment.url})`;
+            }
+    if(MediaGallery.items.length > 0)
+        Container.addMediaGalleryComponents(MediaGallery);
+    if(MediaText.length > 0)
+        Container.addTextDisplayComponents(new TextDisplayBuilder().setContent(MediaText));
+
+    let ButtonRow = new ActionRowBuilder<ButtonBuilder>()
+    ButtonRow.addComponents(
+        new ButtonBuilder()
+            .setLabel('View Original Message')
+            .setStyle(ButtonStyle.Link)
+            .setURL(message.url)
+    );
+
+    // Send the starboard message
+    await starboardChannel.send({ 
+        components: [Container, ButtonRow],
+        flags: [MessageFlags.IsComponentsV2]
+    });
+}
+
+export default function(client: Client) {
+    Logger.info("Initializing Starboard Handler");
+    client.on(Events.MessageReactionAdd, async (reaction, user, details) => {
+        Logger.debug("Reaction added, processing starboard check...");
+        await reaction.fetch();
+        
+        let emojiName = reaction.emoji.id ? `<${reaction.emoji.animated ? 'a' : ''}:${reaction.emoji.name}:${reaction.emoji.id}>` : reaction.emoji.name;
+        if(!emojiName) return;
+        Logger.debug(`Reaction emoji: ${emojiName}`);
+
+        // Get current guild info
+        let guild = reaction.message.guild;
+        if(!guild) return;
+        Logger.debug(`Guild ID: ${guild.id}`);
+
+        let dbGuild = await Database.getGuild(guild.id);
+        if(!dbGuild.starboard.enabled) return;
+        Logger.debug("Starboard is enabled for this guild.");
+
+        // Check if the reaction emoji matches the starboard emoji
+        if(emojiName !== dbGuild.starboard.emoji) return;
+        Logger.debug("Reaction emoji matches starboard emoji.");
+
+        // Check if the reaction count meets the threshold
+        let reactionCount = reaction.count || 0;
+        if(reactionCount < dbGuild.starboard.threshold) return;
+        Logger.debug(`Reaction count (${reactionCount}) meets the threshold (${dbGuild.starboard.threshold}).`);
+
+        // Fetch the starboard channel
+        let starboardChannelId = dbGuild.starboard.channel;
+        if(!starboardChannelId) return;
+        Logger.debug(`Starboard Channel ID: ${starboardChannelId}`);
+
+        // if starboard channel is the same as the message channel, return
+        if(starboardChannelId === reaction.message.channelId) return;
+        Logger.debug("Starboard channel is different from the message channel.");
+
+        let starboardChannel = await guild.channels.fetch(starboardChannelId);
+        if(!starboardChannel || !starboardChannel.isTextBased()) return;
+        Logger.debug("Starboard channel fetched successfully.");
+
+        // Post to starboard
+        await PostToStarboard(reaction, starboardChannel as TextChannel, dbGuild);
+    })
+}

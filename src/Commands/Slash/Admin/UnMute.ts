@@ -19,14 +19,14 @@ module.exports = {
         let member = await interaction.guild?.members.fetch(user.id);
 
         if (!member) {
-            await interaction.followUp({
+            await interaction.editReply({
                 content: "User not found in this server.",
             });
             return;
         }
 
         if(!member.moderatable){
-            await interaction.followUp({
+            await interaction.editReply({
                 content: "I cannot unmute this user. They may have higher permissions than me.",
             });
             return;
@@ -44,7 +44,7 @@ module.exports = {
             .setThumbnailAccessory(new ThumbnailBuilder()
                 .setURL(member.displayAvatarURL() || '')));
 
-        await interaction.followUp({
+        await interaction.editReply({
             components: [ResponseMessage],
             flags: [MessageFlags.IsComponentsV2]
         });

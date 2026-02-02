@@ -4,7 +4,7 @@ import BlacklistSchema from "./BlacklistSchema";
 import WelcomerSchema from "./WelcomerSchema";
 
 let GuildSchema = new Schema({
-    _id: { type: String, required: true, index: true },
+    _id: { type: String, required: true },
 
     starboard: { type: StarboardSchema, default: {} },
     blacklisted: { type: BlacklistSchema, default: {} },

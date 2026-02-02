@@ -18,7 +18,7 @@ module.exports = {
         const durationMatch = TextParser.TimeStringParser(durationStr);
 
         if (durationMatch === null) {
-            await interaction.followUp({
+            await interaction.editReply({
                 content: "Invalid duration format. Please use formats like 5s, 10m, or 1h.",
             });
             return;
@@ -26,7 +26,7 @@ module.exports = {
 
         const durationMs = durationMatch;
         if (durationMs < 0 || durationMs > 21600000) { // 6 hours in milliseconds
-            await interaction.followUp({
+            await interaction.editReply({
                 content: "Duration must be between 0 seconds and 6 hours.",
             });
             return;
@@ -35,12 +35,12 @@ module.exports = {
         try {
             let channel = interaction.channel as TextChannel;
             await channel.setRateLimitPerUser(durationMs / 1000, `Slowmode set by ${interaction.user.tag} (${interaction.user.id})`);
-            await interaction.followUp({
+            await interaction.editReply({
                 content: `Slowmode has been set to ${durationStr}.`,
             });
         }
         catch (error) {
-            await interaction.followUp({
+            await interaction.editReply({
                 content: "An error occurred while setting slowmode. Do I have the necessary permissions?",
             });
             Logger.error(`Slowmode command error: ${error}`);

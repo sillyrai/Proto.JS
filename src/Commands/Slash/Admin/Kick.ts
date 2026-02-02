@@ -22,14 +22,14 @@ module.exports = {
         const member = await interaction.guild?.members.fetch(user.id);
 
         if (!member) {
-            await interaction.followUp({
+            await interaction.editReply({
                 content: "User not found in this server.",
             })
             return;
         }
 
         if (!member.kickable) {
-            await interaction.followUp({
+            await interaction.editReply({
                 content: "I cannot kick this user. They may have higher permissions than me.",
             })
             return;
@@ -73,7 +73,7 @@ ${reason}
             .setThumbnailAccessory(new ThumbnailBuilder()
                 .setURL(interaction.user.displayAvatarURL() || '')));
         
-        await interaction.followUp({
+        await interaction.editReply({
             components: [ResponseMessage],
             flags: [MessageFlags.IsComponentsV2]
         });

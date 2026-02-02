@@ -42,7 +42,7 @@ module.exports = {
 - **Shard ID**: ${interaction.guild ? interaction.guild.shardId : 'N/A'}
 - **Uptime**: <t:${Math.floor((Date.now() - interaction.client.uptime!) / 1000)}:R>`)); 
 
-        await interaction.followUp({ 
+        await interaction.editReply({ 
             components: [BotInfo], 
             flags: [MessageFlags.IsComponentsV2]
         });

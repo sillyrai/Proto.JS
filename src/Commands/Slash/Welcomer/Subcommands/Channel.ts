@@ -4,10 +4,10 @@ import Database from "../../../../Modules/Database";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("channel")
-        .setDescription("Sets the starboard channel")
+        .setDescription("Sets the welcomer channel")
         .addChannelOption(option =>
             option.setName("channel")
-                .setDescription("The channel to set as the starboard channel")
+                .setDescription("The channel to set for the welcomer")
                 .addChannelTypes(ChannelType.GuildText)
                 .setRequired(true)),
                 
@@ -16,20 +16,17 @@ module.exports = {
         await interaction.deferReply()
 
         let dbGuild = await Database.getGuild(interaction.guildId!);
-        dbGuild.starboard.channel = channel.id;
+        dbGuild.welcomer.channel = channel.id;
         await dbGuild.save();
 
         let Response = new ContainerBuilder()
-        Response.addTextDisplayComponents(new TextDisplayBuilder().setContent(`## ⭐ Starboard updated!`));
+        Response.addTextDisplayComponents(new TextDisplayBuilder().setContent(`## 🎉 Welcomer updated!`));
         Response.addSeparatorComponents(new SeparatorBuilder())
-        Response.addTextDisplayComponents(new TextDisplayBuilder().setContent(`The starboard channel has been set to ${channel}.`));
-        if(dbGuild.starboard.enabled === false){
-            Response.addTextDisplayComponents(new TextDisplayBuilder().setContent(`⚠️ Note: The starboard is currently disabled. Use \`/starboard enabled true\` to enable it.`));
-        }
-
+        Response.addTextDisplayComponents(new TextDisplayBuilder().setContent(`The welcomer channel has been updated.`));
+        
         await interaction.editReply({ 
-            components: [Response],
-            flags: [MessageFlags.IsComponentsV2]
+            components: [Response], 
+            flags: [MessageFlags.IsComponentsV2] 
         });
     }
 }
