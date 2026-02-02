@@ -3,6 +3,7 @@ import { ChatInputCommandInteraction, PermissionFlagsBits, SlashCommandBuilder }
 let enabled = require("./Subcommands/enabled");
 let message = require("./Subcommands/Message");
 let channel = require("./Subcommands/Channel");
+let help = require("./Subcommands/Help");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -11,6 +12,7 @@ module.exports = {
         .addSubcommand(enabled.data)
         .addSubcommand(message.data)
         .addSubcommand(channel.data)
+        .addSubcommand(help.data)
 
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
 
@@ -26,6 +28,9 @@ module.exports = {
                 break;
             case "channel":
                 await channel.execute(interaction);
+                break;
+            case "help":
+                await help.execute(interaction);
                 break;
         }
     }

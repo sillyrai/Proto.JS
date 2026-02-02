@@ -1,4 +1,4 @@
-import { ApplicationIntegrationType, ChatInputCommandInteraction, ContainerBuilder, InteractionContextType, MediaGalleryBuilder, MediaGalleryItemBuilder, MessageFlags, SectionBuilder, SeparatorBuilder, SlashCommandBuilder, TextDisplayBuilder, ThumbnailBuilder } from "discord.js";
+import { ActionRowBuilder, ApplicationIntegrationType, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, ContainerBuilder, InteractionContextType, MediaGalleryBuilder, MediaGalleryItemBuilder, MessageFlags, SectionBuilder, SeparatorBuilder, SlashCommandBuilder, TextDisplayBuilder, ThumbnailBuilder } from "discord.js";
 import TextParser from "../../../Modules/TextParser";
 import config from "../../../config.json" assert { type: "json" };
 module.exports = {
@@ -16,6 +16,7 @@ module.exports = {
         ]),
 
     async execute(interaction: ChatInputCommandInteraction) {
+        let ping = Date.now() - interaction.createdTimestamp;
         await interaction.deferReply();
 
         let creator = await interaction.client.users.fetch("285092930400813056", {force: true});
@@ -35,15 +36,28 @@ module.exports = {
         BotInfo.addTextDisplayComponents(new TextDisplayBuilder()
             .setContent(`Hi! I'm **Proto**, a general purpose bot made for furries by furries!`));
 
+        let guildCount = interaction.client.shard ?
+            (await interaction.client.shard.fetchClientValues('guilds.cache.size') as number[])
+                .reduce((a, b) => a + b, 0)
+            : interaction.client.guilds.cache.size;
+
         BotInfo.addSeparatorComponents(new SeparatorBuilder());
         BotInfo.addTextDisplayComponents(new TextDisplayBuilder().setContent(`## Bot Information
 - **Version**: v${config.version.major}.${config.version.minor}.${config.version.patch}${config.version.suffix}
-- **Ping**: ${Date.now() - interaction.createdTimestamp}ms
+- **Ping**: ${ping}ms
 - **Shard ID**: ${interaction.guild ? interaction.guild.shardId : 'N/A'}
-- **Uptime**: <t:${Math.floor((Date.now() - interaction.client.uptime!) / 1000)}:R>`)); 
+- **Uptime**: <t:${Math.floor((Date.now() - interaction.client.uptime!) / 1000)}:R>
+- **Servers**: ${guildCount}`));
+
+        let ButtonRow = new ActionRowBuilder<ButtonBuilder>();
+        ButtonRow.addComponents(new ButtonBuilder()
+            .setLabel("Support Server")
+            .setStyle(ButtonStyle.Link)
+            .setURL("https://discord.gg/s4sSpxn5Hu")
+        )
 
         await interaction.editReply({ 
-            components: [BotInfo], 
+            components: [BotInfo, ButtonRow], 
             flags: [MessageFlags.IsComponentsV2]
         });
     }

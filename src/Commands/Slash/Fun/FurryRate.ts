@@ -26,8 +26,10 @@ module.exports = {
         let rate = Math.floor(Math.random() * 111);
 
         let Container = new ContainerBuilder();
+        let FurredAnimalEmojis = ["🐶", "🐱", "🦊", "🐻", "🐼", "🐨", "🐯", "🦁", "🐮", "🐷", "🐸", "🐵", "🦄", "🐰", "🐹", "🐾"];
+        let randomEmoji = FurredAnimalEmojis[Math.floor(Math.random() * FurredAnimalEmojis.length)];
         Container.addSectionComponents(new SectionBuilder()
-            .addTextDisplayComponents(new TextDisplayBuilder().setContent(`## Furry Rate for @${TextParser.EscapeSymbols(targetUser.tag)}
+            .addTextDisplayComponents(new TextDisplayBuilder().setContent(`## ${randomEmoji} Furry Rate for @${TextParser.EscapeSymbols(targetUser.tag)}
 ### ${targetUser.displayName} is **${rate}%** a furry! 🐾`))
 .setThumbnailAccessory(new ThumbnailBuilder()
                 .setURL(targetUser.displayAvatarURL({ size: 256}))
