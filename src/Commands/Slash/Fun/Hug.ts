@@ -1,6 +1,4 @@
-import { ApplicationIntegrationType, ChatInputCommandInteraction, ContainerBuilder, InteractionContextType, MessageFlags, SectionBuilder, SeparatorBuilder, SlashCommandBuilder, TextDisplayBuilder, ThumbnailBuilder } from "discord.js";
-import TextParser from "../../../Modules/TextParser";
-
+import { ApplicationIntegrationType, ChatInputCommandInteraction, ContainerBuilder, InteractionContextType, MediaGalleryBuilder, MediaGalleryItemBuilder, MessageFlags, SectionBuilder, SeparatorBuilder, SlashCommandBuilder, TextDisplayBuilder, ThumbnailBuilder } from "discord.js";
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("hug")
@@ -53,11 +51,29 @@ module.exports = {
 
         response = response.replace("{caller}", `<@${caller.id}>`).replace("{target}", `<@${target.id}>`);
 
+        const HugGifs: string[] = [
+            "https://c.tenor.com/P9YD49mfnxkAAAAd/tenor.gif",
+            "https://c.tenor.com/OrJiTqPixtYAAAAd/tenor.gif",
+            "https://c.tenor.com/30l78d5MMF4AAAAd/tenor.gif",
+            "https://c.tenor.com/4BjxInu7fa4AAAAd/tenor.gif",
+            "https://c.tenor.com/-jJlxJOR2yIAAAAd/tenor.gif",
+            "https://c.tenor.com/TKM7R7fQjpMAAAAd/tenor.gif",
+            "https://c.tenor.com/K-vGTS6YfcYAAAAd/tenor.gif"
+        ];
+        const selectedGif = HugGifs.length > 0 ? HugGifs[Math.floor(Math.random() * HugGifs.length)] : null;
+
         const Response = new ContainerBuilder()
         Response.addTextDisplayComponents(
             new TextDisplayBuilder()
-                .setContent(`## <:cathug:1468240313851183239> ${response}`)
+                .setContent(`### <:cathug:1468240313851183239> ${response}`)
         );
+
+        if (selectedGif) {
+            Response.addSeparatorComponents(new SeparatorBuilder());
+            Response.addMediaGalleryComponents(new MediaGalleryBuilder()
+                .addItems(new MediaGalleryItemBuilder().setURL(selectedGif))
+            );
+        }
         
         await interaction.reply({ 
             components: [Response],

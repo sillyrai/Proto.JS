@@ -16,7 +16,7 @@ module.exports = {
         ]),
 
     async execute(interaction: ChatInputCommandInteraction) {
-        let ping = Date.now() - interaction.createdTimestamp;
+        let latency = Math.abs(Date.now() - interaction.createdTimestamp);
         await interaction.deferReply();
 
         let creator = await interaction.client.users.fetch("285092930400813056", {force: true});
@@ -45,7 +45,7 @@ You can view what commands I have by typing \`/\` `));
         BotInfo.addSeparatorComponents(new SeparatorBuilder());
         BotInfo.addTextDisplayComponents(new TextDisplayBuilder().setContent(`## Bot Information
 - **Version**: v${config.version.major}.${config.version.minor}.${config.version.patch}${config.version.suffix}
-- **Ping**: ${ping}ms
+- **Ping**: ${latency}ms
 - **Shard ID**: ${interaction.guild ? interaction.guild.shardId : 'N/A'}
 - **Uptime**: <t:${Math.floor((Date.now() - interaction.client.uptime!) / 1000)}:R>
 - **Servers**: ${guildCount}`));

@@ -22,7 +22,7 @@ export default {
         return dbItem;
     },
 
-    async createItem(id:string, name:string, description:string, buyPrice:bigint, sellPrice:bigint, consumable:boolean) {
+    async createItem(id:string, name:string, description:string, buyPrice:bigint, sellPrice:bigint, consumable:boolean, onsale:boolean) {
         let newItem = new ItemSchema({
             _id: id,
             info: {
@@ -33,7 +33,8 @@ export default {
                 buy: buyPrice.toString(),
                 sell: sellPrice.toString()
             },
-            consumable: consumable
+            consumable: consumable,
+            onsale: onsale
         });
         await newItem.save();
         return newItem;

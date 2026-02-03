@@ -2,7 +2,7 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, ContainerBuilder,
 import Logger from "../Modules/Logger";
 import Database from "../Modules/Database";
 
-async function PostToStarboard(reaction: MessageReaction | PartialMessageReaction, starboardChannel:TextChannel, dbGuild:any) {
+export async function PostToStarboard(reaction: MessageReaction | PartialMessageReaction, starboardChannel:TextChannel, dbGuild:any) {
     let message = await reaction.message.fetch();
 
     // Check if guild.starboard.posted already has this message ID
@@ -87,11 +87,22 @@ export default function(client: Client) {
         if(starboardChannelId === reaction.message.channelId) return;
         Logger.debug("Starboard channel is different from the message channel.");
 
-        let starboardChannel = await guild.channels.fetch(starboardChannelId);
-        if(!starboardChannel || !starboardChannel.isTextBased()) return;
-        Logger.debug("Starboard channel fetched successfully.");
+        try{
+            let starboardChannel = await guild.channels.fetch(starboardChannelId);
+            if(!starboardChannel || !starboardChannel.isTextBased()) return;
+            Logger.debug("Starboard channel fetched successfully.");
 
-        // Post to starboard
-        await PostToStarboard(reaction, starboardChannel as TextChannel, dbGuild);
+            // Post to starboard
+            await PostToStarboard(reaction, starboardChannel as TextChannel, dbGuild);
+        }
+        catch(err){
+            Logger.error("Error fetching starboard channel or posting to starboard:" + err);
+
+            // Could not fetch starboard channel, possibly deleted or missing permissions
+            // Disable starboard in the database
+            dbGuild.starboard.enabled = false;
+            await dbGuild.save();
+            Logger.info(`Starboard disabled for guild ${guild.id} due to channel fetch error.`);
+        };
     })
 }

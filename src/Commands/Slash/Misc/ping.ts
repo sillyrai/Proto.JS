@@ -15,7 +15,7 @@ module.exports = {
         ]),
 
     async execute(interaction: ChatInputCommandInteraction) {
-        let latency = Date.now() - interaction.createdTimestamp;
+        let latency = Math.abs(Date.now() - interaction.createdTimestamp);
         
         let Container = new ContainerBuilder();
         Container.addTextDisplayComponents(new TextDisplayBuilder().setContent(`## Pong! 🏓`));

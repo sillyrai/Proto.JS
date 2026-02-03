@@ -5,6 +5,7 @@ import chalk from 'chalk';
 import mongoose from 'mongoose';
 import StarboardHandler from './Handlers/StarboardHandler';
 import WelcomerHandler from './Handlers/WelcomerHandler';
+import VoteHandler from './Handlers/VoteHandler';
 
 const client = new Client({
     intents: [
@@ -34,5 +35,6 @@ mongoose.connect(process.env.MONGODB_URI || '')
 SlashCommandHandler(client);
 StarboardHandler(client);
 WelcomerHandler(client);
+VoteHandler(client);
 
 client.login(process.env.DISCORD_TOKEN);

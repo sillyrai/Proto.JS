@@ -15,13 +15,23 @@ module.exports = {
         .addIntegerOption(option =>
             option.setName("quantity")
                 .setDescription("The quantity of the item to give")
-                .setRequired(true)),
+                .setRequired(true))
+        .addUserOption(option =>
+            option.setName("user")
+                .setDescription("The user to give the item to (defaults to yourself)")
+                .setRequired(false)),
         
     async execute(interaction: ChatInputCommandInteraction) {
+        if(interaction.user.id !== process.env.OWNER_ID) {
+            await interaction.reply({ content: "You do not have permission to use this command.", ephemeral: true });
+            return;
+        }
+        let user = interaction.options.getUser("user") || interaction.user;
+
         const itemId = interaction.options.getString("item_id", true);
         const quantity = interaction.options.getInteger("quantity", true);
 
-        let dbUser = await Database.getUser(interaction.user.id);
+        let dbUser = await Database.getUser(user.id);
         let inventoryItem = dbUser.economy.inventory.find(i => i._id === itemId);
         if(inventoryItem) {
             inventoryItem.quantity += quantity;
@@ -29,6 +39,6 @@ module.exports = {
             dbUser.economy.inventory.push({ _id: itemId, quantity: quantity });
         }
         await dbUser.save();
-        await interaction.reply({ content: `Gave ${quantity} of item ${itemId} to you.`, ephemeral: true });
+        await interaction.reply({ content: `Gave ${quantity} of item ${itemId} to ${user.username}.`, ephemeral: true });
     }
 }

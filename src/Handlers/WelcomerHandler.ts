@@ -37,6 +37,7 @@ export default function(client: Client) {
         let channelId = dbGuild.welcomer.channel;
         if(!channelId) return;
 
+        try{
         let channel = await guild.channels.fetch(channelId);
         if(!channel || !channel.isTextBased()) return;
 
@@ -46,6 +47,15 @@ export default function(client: Client) {
         welcomeMessage = ConvertVariables(member, welcomeMessage);
 
         await channel.send({ content: welcomeMessage });
+        } catch (e) {
+            Logger.error(`Failed to send welcome message in guild ${guild.id}: ${e}`);
+
+            // Failed to send welcome message in guild, possibly due to missing permissions or deleted channel
+            // Disable welcomer in the database
+            dbGuild.welcomer.enabled = false;
+            await dbGuild.save();
+            Logger.info(`Welcomer disabled for guild ${guild.id} due to message send error.`);
+        }
     })
 
     client.on(Events.GuildMemberRemove, async (member) => {
@@ -55,14 +65,24 @@ export default function(client: Client) {
 
         let channelId = dbGuild.welcomer.channel;
         if(!channelId) return;
-        let channel = await guild.channels.fetch(channelId);
-        if(!channel || !channel.isTextBased()) return;
+        try {
+            let channel = await guild.channels.fetch(channelId);
+            if(!channel || !channel.isTextBased()) return;
 
-        let leaveMessage = dbGuild.welcomer.leaveMessage;
-        if(!leaveMessage) return;
+            let leaveMessage = dbGuild.welcomer.leaveMessage;
+            if(!leaveMessage) return;
 
-        leaveMessage = ConvertVariables(member, leaveMessage);
+            leaveMessage = ConvertVariables(member, leaveMessage);
 
-        await channel.send({ content: leaveMessage });
+            await channel.send({ content: leaveMessage });
+        } catch (e) {
+            Logger.error(`Failed to send leave message in guild ${guild.id}: ${e}`);
+
+            // Failed to send leave message in guild, possibly due to missing permissions or deleted channel
+            // Disable welcomer in the database
+            dbGuild.welcomer.enabled = false;
+            await dbGuild.save();
+            Logger.info(`Welcomer disabled for guild ${guild.id} due to message send error.`);
+        }
     })
 }

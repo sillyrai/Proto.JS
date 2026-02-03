@@ -5,6 +5,7 @@ let threshold = require("./Subcommands/Threshold");
 let enabled = require("./Subcommands/Enabled");
 let emoji = require("./Subcommands/emoji");
 let help = require("./Subcommands/Help");
+let force = require("./Subcommands/Force");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -15,6 +16,7 @@ module.exports = {
         .addSubcommand(enabled.data)
         .addSubcommand(emoji.data)
         .addSubcommand(help.data)
+        .addSubcommand(force.data)
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
 
     async execute(interaction: ChatInputCommandInteraction) {
@@ -35,6 +37,9 @@ module.exports = {
                 break;
             case "help":
                 await help.execute(interaction);
+                break;
+            case "force":
+                await force.execute(interaction);
                 break;
         }
     }
