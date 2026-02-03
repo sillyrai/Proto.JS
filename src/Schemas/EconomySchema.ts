@@ -6,10 +6,15 @@ let CooldownSchema = new Schema({
     work: { type: Date, default: Date.now }
 }, { versionKey: false, _id: false });
 
+let InventoryItemSchema = new Schema({
+    _id: { type: String, required: true },
+    quantity: { type: Number, default: 0 }
+}, { versionKey: false, _id: false });
 
 let EconomySchema = new Schema({
     balance: { type: String, default: "0" }, // Using string to store bigint
-    cooldowns: { type: CooldownSchema, default: {} }
+    cooldowns: { type: CooldownSchema, default: {} },
+    inventory: { type: [InventoryItemSchema], default: [] }
 }, { versionKey: false, _id: false });
 
 export default EconomySchema;

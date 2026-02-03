@@ -44,14 +44,16 @@ module.exports = {
         await dbTarget.save();
 
         let Response = new ContainerBuilder();
+        Response.addTextDisplayComponents(
+            new TextDisplayBuilder().setContent(`## :money_with_wings: Payment successful!
+**${interaction.user.username}** has paid **${target.username}** ${TextParser.BigIntComma(amount)} coins.`))
+
         Response.addSectionComponents(new SectionBuilder()
             .addTextDisplayComponents(
                 new TextDisplayBuilder()
-                    .setContent(`## :money_with_wings: Payment Successful
-**${interaction.user.username}** has paid **${TextParser.BigIntComma(amount)}** coins to **${target.username}**.
-${TextParser.NumDiffBigInt(balance, dbUser.economy.balance)}`))
+                    .setContent(`${TextParser.NumDiffBigInt(balance, dbUser.economy.balance)}`))
             .setThumbnailAccessory(new ThumbnailBuilder().setURL(interaction.user.displayAvatarURL({ size: 256 }))));
-
+        
         Response.addSectionComponents(new SectionBuilder()
             .addTextDisplayComponents(
                 new TextDisplayBuilder()

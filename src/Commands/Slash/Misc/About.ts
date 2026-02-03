@@ -3,7 +3,7 @@ import TextParser from "../../../Modules/TextParser";
 import config from "../../../config.json" assert { type: "json" };
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("about")
+        .setName("help")
         .setDescription("Information about the bot!")
         .setContexts([
             InteractionContextType.Guild, 
@@ -34,7 +34,8 @@ module.exports = {
         BotInfo.addSeparatorComponents(new SeparatorBuilder());
         BotInfo.addTextDisplayComponents(new TextDisplayBuilder().setContent(`# :blue_heart: Proto`));
         BotInfo.addTextDisplayComponents(new TextDisplayBuilder()
-            .setContent(`Hi! I'm **Proto**, a general purpose bot made for furries by furries!`));
+            .setContent(`Hi! I'm **Proto**, a general purpose bot made for furries by furries! 
+You can view what commands I have by typing \`/\` `));
 
         let guildCount = interaction.client.shard ?
             (await interaction.client.shard.fetchClientValues('guilds.cache.size') as number[])
@@ -54,6 +55,18 @@ module.exports = {
             .setLabel("Support Server")
             .setStyle(ButtonStyle.Link)
             .setURL("https://discord.gg/s4sSpxn5Hu")
+        )
+
+        ButtonRow.addComponents(new ButtonBuilder()
+            .setLabel("Invite Proto")
+            .setStyle(ButtonStyle.Link)
+            .setURL(`https://discord.com/oauth2/authorize?client_id=${interaction.client.user?.id}`)
+        )
+
+        ButtonRow.addComponents(new ButtonBuilder()
+            .setLabel("Vote on top.gg")
+            .setStyle(ButtonStyle.Link)
+            .setURL(`https://top.gg/bot/${interaction.client.user?.id}/vote`)
         )
 
         await interaction.editReply({ 

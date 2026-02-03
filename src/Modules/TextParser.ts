@@ -80,5 +80,17 @@ ${sign} ${this.BigIntComma(absDiff)}
         } else {
             return BigInt(Math.floor(parseFloat(valueStr)));
         }
-    }   
+    },
+
+    SizeSuffix(num: bigint): string {
+        const suffixes = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Oc", "No", "De", "Ud", "Dd", "Td", "Qt", "Qi", "Sxt", "Oct", "Not", "Vg", "Uv", "Dv", "Tv", "QtV", "QiV", "SxtV", "OctV", "NotV"];
+        let size = num;
+        let suffixIndex = 0;
+        while (size >= 1000n && suffixIndex < suffixes.length - 1) {
+            size /= 1000n;
+            suffixIndex++;
+        }
+        return `${size}${suffixes[suffixIndex]}`;
+    },
+
 }

@@ -41,11 +41,14 @@ module.exports = {
 
         const caller = interaction.user;
         const target = interaction.options.getUser("target", true);
-        let response = responses[Math.abs((caller.id.length + target.id.length) % responses.length)];
+        let response = responses[Math.floor(Math.random() * responses.length)];
 
         // Easter egg
         if(target.id === interaction.client.user?.id) {
             response = "{caller} hugs me! *blushes* ʕ•́ᴥ•̀ʔっ";
+        }
+        if(target.id === caller.id) {
+            response = "{caller} hugs themselves. It's... nice, I guess?";
         }
 
         response = response.replace("{caller}", `<@${caller.id}>`).replace("{target}", `<@${target.id}>`);
@@ -53,7 +56,7 @@ module.exports = {
         const Response = new ContainerBuilder()
         Response.addTextDisplayComponents(
             new TextDisplayBuilder()
-                .setContent(`:people_hugging: ${response}`)
+                .setContent(`## <:cathug:1468240313851183239> ${response}`)
         );
         
         await interaction.reply({ 

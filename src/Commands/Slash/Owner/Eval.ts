@@ -22,7 +22,7 @@ module.exports = {
     async execute(interaction: ChatInputCommandInteraction) {
         const code = interaction.options.getString("code", true);
 
-        let FakeExceptions = [
+        let FakeExceptions = [ // lol, lmao even
             "ReferenceError: client is not defined",
             "TypeError: Cannot read properties of undefined (reading 'id')",
             "SyntaxError: Unexpected token '}'",
