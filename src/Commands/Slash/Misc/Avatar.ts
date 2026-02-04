@@ -3,7 +3,7 @@ import { ActionRowBuilder, ApplicationIntegrationType, ButtonBuilder, ButtonStyl
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("avatar")
-        .setDescription("Get someones avatar!")
+        .setDescription("🖼️ Get someones avatar!")
         .addUserOption(option => 
             option.setName("target")
                 .setDescription("The user to get the avatar of")

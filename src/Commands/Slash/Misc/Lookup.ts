@@ -3,7 +3,7 @@ import { ApplicationIntegrationType, ChatInputCommandInteraction, ContainerBuild
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("lookup")
-        .setDescription("Lookup a user for their profile information")
+        .setDescription("🔍 Lookup a user for their profile information")
         .addUserOption(option =>
             option.setName("user")
                 .setDescription("The user to lookup")

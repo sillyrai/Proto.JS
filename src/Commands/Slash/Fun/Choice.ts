@@ -4,7 +4,7 @@ import TextParser from "../../../Modules/TextParser";
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("choice")
-        .setDescription("Make a choice from your options.")
+        .setDescription("🎲 Make a choice from your options.")
         .addStringOption(option => 
             option.setName("options")
                 .setDescription("The options to choose from, separated by commas")

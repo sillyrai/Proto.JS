@@ -2,7 +2,7 @@ import { ApplicationIntegrationType, ChatInputCommandInteraction, ContainerBuild
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("boop")
-        .setDescription("Boop a person >:3.")
+        .setDescription("🐾 Boop a person >:3.")
         .addUserOption(option => 
             option.setName("user")
                 .setDescription("The user to boop")

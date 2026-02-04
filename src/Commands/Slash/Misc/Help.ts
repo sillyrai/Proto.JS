@@ -4,7 +4,7 @@ import config from "../../../config.json" assert { type: "json" };
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("help")
-        .setDescription("Information about the bot!")
+        .setDescription("🔰 Information about the bot!")
         .setContexts([
             InteractionContextType.Guild, 
             InteractionContextType.BotDM, 

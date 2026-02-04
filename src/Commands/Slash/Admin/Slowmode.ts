@@ -4,7 +4,7 @@ import TextParser from "../../../Modules/TextParser";
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("slowmode")
-        .setDescription("Sets slowmode for the current channel")
+        .setDescription("⚒️ Sets slowmode for the current channel")
         .addStringOption(option => 
             option.setName("duration")
                 .setDescription("The slowmode duration (e.g., 5s, 10m, 1h), max 6 hours")

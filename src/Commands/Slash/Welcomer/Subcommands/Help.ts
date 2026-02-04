@@ -3,7 +3,7 @@ import { ChatInputCommandInteraction, SlashCommandSubcommandBuilder, ContainerBu
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("help")
-        .setDescription("Displays help information for the welcomer commands"),
+        .setDescription("👋 Displays help information for the welcomer commands"),
                 
     async execute(interaction: ChatInputCommandInteraction) {
         let Container = new ContainerBuilder();

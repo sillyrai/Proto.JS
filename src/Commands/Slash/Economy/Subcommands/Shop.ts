@@ -7,7 +7,7 @@ import TextParser from "../../../../Modules/TextParser";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("shop")
-        .setDescription("View and buy items from the shop!"),
+        .setDescription("💸 View and buy items from the shop!"),
                   
     async execute(interaction: ChatInputCommandInteraction) {
         let items = await ItemSchema.find({onsale: true});

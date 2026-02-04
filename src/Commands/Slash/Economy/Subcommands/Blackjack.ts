@@ -92,7 +92,7 @@ Bet Amount: **${TextParser.BigIntComma(betAmount)} coins**`));
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("blackjack")
-        .setDescription("Play a game of blackjack to win or lose coins")
+        .setDescription("💸 Play a game of blackjack to win or lose coins")
         .addStringOption(option => 
             option.setName("bet")
                 .setDescription("Amount of coins to bet (e.g., 100, 5k)")

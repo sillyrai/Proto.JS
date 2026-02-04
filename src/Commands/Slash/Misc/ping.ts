@@ -3,7 +3,7 @@ import { ApplicationIntegrationType, ChatInputCommandInteraction, ContainerBuild
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("ping")
-        .setDescription("Replies with Pong!")
+        .setDescription("🏓 Replies with Pong!")
         .setContexts([
             InteractionContextType.Guild, 
             InteractionContextType.BotDM, 

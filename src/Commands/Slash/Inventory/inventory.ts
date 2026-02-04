@@ -4,7 +4,7 @@ let view = require("./Subcommands/view")
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("inventory")
-        .setDescription("Extension to the economy system for managing your inventory")
+        .setDescription("🎒 Extension to the economy system for managing your inventory")
         .setContexts([
             InteractionContextType.Guild, 
             InteractionContextType.BotDM, 

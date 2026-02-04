@@ -4,7 +4,7 @@ import Database from "../../../../Modules/Database";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("channel")
-        .setDescription("Sets the welcomer channel")
+        .setDescription("👋 Sets the welcomer channel")
         .addChannelOption(option =>
             option.setName("channel")
                 .setDescription("The channel to set for the welcomer")

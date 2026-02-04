@@ -5,7 +5,7 @@ import TextParser from "../../../../Modules/TextParser";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("view")
-        .setDescription("View your or someone else's inventory")
+        .setDescription("🎒 View your or someone else's inventory")
         .addUserOption(option =>
             option.setName("user")
                 .setDescription("The user whose inventory you want to view")

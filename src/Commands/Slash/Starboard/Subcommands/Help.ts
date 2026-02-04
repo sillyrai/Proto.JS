@@ -4,7 +4,7 @@ import Database from "../../../../Modules/Database";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("help")
-        .setDescription("Displays help information for the starboard commands"),
+        .setDescription("⭐ Displays help information for the starboard commands"),
                 
     async execute(interaction: ChatInputCommandInteraction) {
         let Container = new ContainerBuilder();

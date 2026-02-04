@@ -6,7 +6,7 @@ import sharp from "sharp";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("deepfry")
-        .setDescription("ts frying me bro | Create a deepfried image from a user's avatar or uploaded image")
+        .setDescription("🖼️ ts frying me bro | Create a deepfried image from a user's avatar or uploaded image")
         .addUserOption(option => 
             option.setName("user")
                 .setDescription("The user to create a deepfried image of")

@@ -7,7 +7,7 @@ import UserSchema from "../../../../Schemas/UserSchema";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("leaderboard")
-        .setDescription("View the economy leaderboard (global)"),
+        .setDescription("💸 View the economy leaderboard (global)"),
                 
     async execute(interaction: ChatInputCommandInteraction) {
 

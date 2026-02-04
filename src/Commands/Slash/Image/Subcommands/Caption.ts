@@ -6,7 +6,7 @@ import sharp from "sharp";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("caption")
-        .setDescription("Add a meme-style caption to a user's avatar or uploaded image")
+        .setDescription("🖼️ Add a meme-style caption to a user's avatar or uploaded image")
         .addStringOption(option =>
             option.setName("caption")
                 .setDescription("The caption to add to the image")

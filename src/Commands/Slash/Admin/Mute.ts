@@ -4,7 +4,7 @@ import TextParser from "../../../Modules/TextParser";
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("mute")
-        .setDescription("Mutes a user in the server")
+        .setDescription("⚒️ Mutes a user in the server")
         .addUserOption(option => 
             option.setName("user")
                 .setDescription("The user to mute")

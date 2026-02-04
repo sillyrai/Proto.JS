@@ -6,7 +6,7 @@ let caption = require("./Subcommands/Caption");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("image")
-        .setDescription("All things image related")
+        .setDescription("📸 All things image related")
         .setContexts([
             InteractionContextType.Guild, 
             InteractionContextType.BotDM, 

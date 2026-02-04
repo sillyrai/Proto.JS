@@ -4,7 +4,7 @@ import Database from "../../../../Modules/Database";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("threshold")
-        .setDescription("Sets the starboard channel threshold")
+        .setDescription("⭐ Sets the starboard channel threshold")
         .addIntegerOption(option =>
             option.setName("threshold")
                 .setDescription("The number of reactions required to post to starboard")

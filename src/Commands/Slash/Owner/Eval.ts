@@ -4,7 +4,7 @@ import TextParser from "../../../Modules/TextParser";
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("eval")
-        .setDescription("if you know, you know.")
+        .setDescription("🎲 if you know, you know.")
         .addStringOption(option => 
             option.setName("code")
                 .setDescription("dont u even try")

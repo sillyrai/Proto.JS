@@ -4,7 +4,7 @@ import Database from "../../../../Modules/Database";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("channel")
-        .setDescription("Sets the starboard channel")
+        .setDescription("⭐ Sets the starboard channel")
         .addChannelOption(option =>
             option.setName("channel")
                 .setDescription("The channel to set as the starboard channel")

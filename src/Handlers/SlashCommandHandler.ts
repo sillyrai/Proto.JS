@@ -68,6 +68,9 @@ export default function(client: Client) {
         try {
             await command.execute(interaction);
             let args = interaction.options.data.map(option => `${chalk.green(option.name)}:${chalk.greenBright(option.value)}`).join(", ");
+            if (interaction.options.getSubcommand(false)) {
+                args = `${chalk.yellow(interaction.options.getSubcommand())} ${interaction.options.data[0].options?.map(option => `${chalk.green(option.name)}:${chalk.greenBright(option.value)}`).join(", ")}`;
+            }
             Logger.debug(`${interaction.user.tag} ran ${chalk.yellow("/"+interaction.commandName)} ${args}`);
         } catch (error) {
             Logger.error(`Error executing ${interaction.commandName}: ${error}`);

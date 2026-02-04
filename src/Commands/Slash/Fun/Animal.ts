@@ -57,7 +57,7 @@ async function fetchAnimalUrl(animal_type:string): Promise<string> {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("animal")
-        .setDescription("Get a cute animal picture!")
+        .setDescription("🦊 Get a cute animal picture!")
         .addStringOption(option => 
             option.setName("animal_type")
                 .setDescription("The type of animal to get a picture of")

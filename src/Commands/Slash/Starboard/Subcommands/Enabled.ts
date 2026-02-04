@@ -4,7 +4,7 @@ import Database from "../../../../Modules/Database";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("enabled")
-        .setDescription("Enables or disables the starboard")
+        .setDescription("⭐ Enables or disables the starboard")
         .addBooleanOption(option =>
             option.setName("enabled")
                 .setDescription("Enable or disable the starboard")

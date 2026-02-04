@@ -4,7 +4,7 @@ import {PostToStarboard} from "../../../../Handlers/StarboardHandler";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("force")
-        .setDescription("Force a message to be posted to the starboard, bypassing the threshold requirement")
+        .setDescription("⭐ Force a message to be posted to the starboard, bypassing the threshold requirement")
         .addStringOption(option =>
             option.setName("message_id")
                 .setDescription("The ID of the message to force to starboard")

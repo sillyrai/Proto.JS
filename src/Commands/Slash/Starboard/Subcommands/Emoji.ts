@@ -4,7 +4,7 @@ import Database from "../../../../Modules/Database";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("emoji")
-        .setDescription("Sets the starboard emoji")
+        .setDescription("⭐ Sets the starboard emoji")
         .addStringOption(option =>
             option.setName("emoji")
                 .setDescription("The emoji to use for the starboard")

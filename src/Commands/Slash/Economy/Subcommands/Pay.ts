@@ -5,7 +5,7 @@ import TextParser from "../../../../Modules/TextParser";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("pay")
-        .setDescription("Give some of your money to another user")
+        .setDescription("💸 Give some of your money to another user")
         .addUserOption(option => 
             option.setName("target")
                 .setDescription("The user to pay")

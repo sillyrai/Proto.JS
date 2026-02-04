@@ -4,7 +4,7 @@ import TextParser from "../../../Modules/TextParser";
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("furryrate")
-        .setDescription("Rate how much of a furry someone is!")
+        .setDescription("🦊 Rate how much of a furry someone is!")
         .addUserOption(option => 
             option.setName("user")
                 .setDescription("The user to rate")

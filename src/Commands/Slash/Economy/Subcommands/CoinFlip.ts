@@ -5,7 +5,7 @@ import TextParser from "../../../../Modules/TextParser";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("coinflip")
-        .setDescription("Flip a coin to win or lose coins")
+        .setDescription("💸 Flip a coin to win or lose coins")
         .addStringOption(option => 
             option.setName("choice")
                 .setDescription("Choose heads or tails")

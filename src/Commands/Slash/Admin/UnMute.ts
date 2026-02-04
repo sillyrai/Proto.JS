@@ -4,7 +4,7 @@ import Logger from "../../../Modules/Logger";
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("unmute")
-        .setDescription("Unmutes a user in the server")
+        .setDescription("⚒️ Unmutes a user in the server")
         .addUserOption(option => 
             option.setName("user")
                 .setDescription("The user to unmute")

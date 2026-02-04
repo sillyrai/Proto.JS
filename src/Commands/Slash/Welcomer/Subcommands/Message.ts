@@ -4,7 +4,7 @@ import Database from "../../../../Modules/Database";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("message")
-        .setDescription("Sets the join/leave message")
+        .setDescription("👋 Sets the join/leave message")
         .addStringOption(option =>
             option.setName("type")
                 .setDescription("The type of message to set (join or leave)")

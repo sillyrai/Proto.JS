@@ -3,7 +3,7 @@ import Logger from "../../../Modules/Logger";
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("ban")
-        .setDescription("Bans a user from the server")
+        .setDescription("⚒️ Bans a user from the server")
         .addUserOption(option => 
             option.setName("user")
                 .setDescription("The user to ban")

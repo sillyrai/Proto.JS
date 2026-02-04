@@ -4,7 +4,7 @@ import TextParser from "../../../Modules/TextParser";
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("8ball")
-        .setDescription("Ask an 8ball a question, though answers might be a bit... unpredictable.")
+        .setDescription("🎱 Ask an 8ball a question, though answers might be a bit... unpredictable.")
         .addStringOption(option => 
             option.setName("message")
                 .setDescription("The message to ask the 8ball")

@@ -5,7 +5,7 @@ import TextParser from "../../../../Modules/TextParser";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("weekly")
-        .setDescription("Get your weekly coins, 7 day cooldown"),
+        .setDescription("💸 Get your weekly coins, 7 day cooldown"),
                 
                 
     async execute(interaction: ChatInputCommandInteraction) {

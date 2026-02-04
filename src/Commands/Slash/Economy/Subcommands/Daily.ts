@@ -5,7 +5,7 @@ import TextParser from "../../../../Modules/TextParser";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("daily")
-        .setDescription("Get your daily coins, 24 hour cooldown"),
+        .setDescription("💸 Get your daily coins, 24 hour cooldown"),
                   
     async execute(interaction: ChatInputCommandInteraction) {
         let dbUser = await Database.getUser(interaction.user.id);

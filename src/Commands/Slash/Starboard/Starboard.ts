@@ -10,7 +10,7 @@ let force = require("./Subcommands/Force");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("starboard")
-        .setDescription("All things starboard related")
+        .setDescription("⭐ All things starboard related")
         .addSubcommand(channel.data)
         .addSubcommand(threshold.data)
         .addSubcommand(enabled.data)

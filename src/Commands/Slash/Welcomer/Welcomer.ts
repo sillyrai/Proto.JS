@@ -8,7 +8,7 @@ let help = require("./Subcommands/Help");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("welcomer")
-        .setDescription("All things welcomer related")
+        .setDescription("👋 All things welcomer related")
         .addSubcommand(enabled.data)
         .addSubcommand(message.data)
         .addSubcommand(channel.data)

@@ -11,7 +11,7 @@ let shop = require("./Subcommands/Shop");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("economy")
-        .setDescription("All things economy related")
+        .setDescription("💸 All things economy related")
         .setContexts([
             InteractionContextType.Guild, 
             InteractionContextType.BotDM, 

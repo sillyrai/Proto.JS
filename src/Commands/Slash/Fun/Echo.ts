@@ -4,7 +4,7 @@ import TextParser from "../../../Modules/TextParser";
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("echo")
-        .setDescription("Echo your message.")
+        .setDescription("🔁 Echo your message.")
         .addStringOption(option => 
             option.setName("message")
                 .setDescription("The message to echo")

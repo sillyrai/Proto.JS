@@ -3,7 +3,7 @@ import { ApplicationIntegrationType, ChatInputCommandInteraction, ContainerBuild
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("embed")
-        .setDescription("Create a custom embed message.")
+        .setDescription("🛠️ Create a custom embed message.")
         .addStringOption(option =>
             option.setName("title")
                 .setDescription("The title of the embed")

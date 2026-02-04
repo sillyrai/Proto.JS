@@ -7,7 +7,7 @@ import Logger from "../../../../Modules/Logger";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("pet")
-        .setDescription("Create a petpet gif from a user's avatar or uploaded image")
+        .setDescription("🖼️ Create a petpet gif from a user's avatar or uploaded image")
         .addUserOption(option => 
             option.setName("user")
                 .setDescription("The user to create a petpet gif of")

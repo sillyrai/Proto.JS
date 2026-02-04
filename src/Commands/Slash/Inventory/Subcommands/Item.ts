@@ -5,7 +5,7 @@ import fs from "fs";
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
         .setName("item")
-        .setDescription("Use an item from your inventory")
+        .setDescription("🎒 Use an item from your inventory")
         .addStringOption(option => 
             option.setName("item_id")
                 .setDescription("The ID of the item to use (you can view item IDs in your inventory)")
