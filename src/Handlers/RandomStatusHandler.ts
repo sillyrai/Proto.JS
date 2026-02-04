@@ -1,15 +1,13 @@
-import { ActivityType, Client } from "discord.js";
+import { ActivityType, Client, Events } from "discord.js";
 import { set } from "mongoose";
 
 export default async function(client: Client) {
-    client.on("ready", async () => {
+    client.on(Events.ClientReady, async () => {
         let commandCount = (client as any).commands?.size || 0;
-        let guildCount = await client.guilds.fetch().then(guilds => guilds.size);
         const statuses = [
             "Watching you sleep ●w●",
             `${commandCount} commands available! Type / to see them!`,
             `🦊🦊🦊🦊🦊🦊🦊`,
-            `${guildCount} servers!`,
             `rawr :3`,
             `boops u`,
             `beep boop!`,
@@ -20,6 +18,6 @@ export default async function(client: Client) {
             let status = statuses[Math.floor(Math.random() * statuses.length)];
             client.user?.setActivity(status, { type: ActivityType.Custom });
 
-        }, 5000); // Change status every 20 seconds
+        }, 1000*20); // Change status every 20 seconds
     })
 }
