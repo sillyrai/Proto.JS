@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 
-let enabled = require("./Subcommands/enabled");
+let enabled = require("./Subcommands/Enabled");
 let message = require("./Subcommands/Message");
 let channel = require("./Subcommands/Channel");
 let help = require("./Subcommands/Help");

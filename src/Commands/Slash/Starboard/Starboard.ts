@@ -3,7 +3,7 @@ import { ChatInputCommandInteraction, PermissionFlagsBits, SlashCommandBuilder }
 let channel = require("./Subcommands/Channel");
 let threshold = require("./Subcommands/Threshold");
 let enabled = require("./Subcommands/Enabled");
-let emoji = require("./Subcommands/emoji");
+let emoji = require("./Subcommands/Emoji");
 let help = require("./Subcommands/Help");
 let force = require("./Subcommands/Force");
 

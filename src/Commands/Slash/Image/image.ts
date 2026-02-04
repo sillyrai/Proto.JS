@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ApplicationIntegrationType, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, ContainerBuilder, InteractionContextType, MessageFlags, SeparatorBuilder, SlashCommandBuilder, TextDisplayBuilder } from "discord.js";
-let pet = require("./Subcommands/pet");
+let pet = require("./Subcommands/Pet");
 let deepfry = require("./Subcommands/Deepfry");
 let caption = require("./Subcommands/Caption");
 
