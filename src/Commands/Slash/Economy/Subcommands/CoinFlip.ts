@@ -1,6 +1,7 @@
 import { ChatInputCommandInteraction, ContainerBuilder, MessageFlags, SectionBuilder, SlashCommandSubcommandBuilder, TextDisplayBuilder, ThumbnailBuilder } from "discord.js";
 import Database from "../../../../Modules/Database";
 import TextParser from "../../../../Modules/TextParser";
+import Logger from "../../../../Modules/Logger";
 
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
@@ -60,6 +61,7 @@ You won **${TextParser.BigIntComma(betAmount)} coins**!
 ${TextParser.NumDiffBigInt(balance, dbUser.economy.balance)}`))
                 .setThumbnailAccessory(new ThumbnailBuilder().setURL(interaction.user.displayAvatarURL({ size: 256})))
             );
+            Logger.info(`User ${interaction.user.id} won ${betAmount} coins in coin flip.`);
         } else {
             // User loses
             dbUser.economy.balance = `${BigInt(dbUser.economy.balance) - BigInt(betAmount)}`;
@@ -73,6 +75,7 @@ You lost **${TextParser.BigIntComma(betAmount)} coins**.
 ${TextParser.NumDiffBigInt(balance, dbUser.economy.balance)}`))
                 .setThumbnailAccessory(new ThumbnailBuilder().setURL(interaction.user.displayAvatarURL({ size: 256})))
             );
+            Logger.info(`User ${interaction.user.id} lost ${betAmount} coins in coin flip.`);
         }
 
         await interaction.reply({ 

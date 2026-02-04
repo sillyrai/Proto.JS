@@ -8,10 +8,12 @@ function ConvertVariables(member:GuildMember|PartialGuildMember, message:string)
     {user.mention} - The mention of the user
     {user.displayName} - The display name of the user
     {user.id} - The ID of the user
+    {user} -> {user.username} (for backward compatibility)
 
     {guild.name} - The name of the server
     {guild.memberCount} - The member count of the server
     {guild.id} - The ID of the server
+    
     */
     let guild = member.guild;
 
@@ -22,6 +24,7 @@ function ConvertVariables(member:GuildMember|PartialGuildMember, message:string)
     message = message.replace(/{guild\.name}/g, guild.name);
     message = message.replace(/{guild\.memberCount}/g, guild.memberCount.toString());
     message = message.replace(/{guild\.id}/g, guild.id);
+    message = message.replace(/{user}/g, member.user?.username || 'Unknown User'); // backward compatibility
     
     return message;
 }

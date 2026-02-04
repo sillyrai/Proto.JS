@@ -1,6 +1,7 @@
 import { ChatInputCommandInteraction, ContainerBuilder, MessageFlags, SectionBuilder, SlashCommandSubcommandBuilder, TextDisplayBuilder, ThumbnailBuilder } from "discord.js";
 import Database from "../../../../Modules/Database";
 import TextParser from "../../../../Modules/TextParser";
+import Logger from "../../../../Modules/Logger";
 
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
@@ -64,5 +65,6 @@ module.exports = {
             components: [Response],
             flags: [MessageFlags.IsComponentsV2]
         });
+        Logger.info(`${interaction.user.id} paid ${target.id} ${TextParser.BigIntComma(amount)} coins.`);
     }
 }

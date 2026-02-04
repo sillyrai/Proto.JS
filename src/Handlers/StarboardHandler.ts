@@ -53,51 +53,41 @@ export async function PostToStarboard(reaction: MessageReaction | PartialMessage
 export default function(client: Client) {
     Logger.info("Initializing Starboard Handler");
     client.on(Events.MessageReactionAdd, async (reaction, user, details) => {
-        Logger.debug("Reaction added, processing starboard check...");
         await reaction.fetch();
         
         let emojiName = reaction.emoji.id ? `<${reaction.emoji.animated ? 'a' : ''}:${reaction.emoji.name}:${reaction.emoji.id}>` : reaction.emoji.name;
         if(!emojiName) return;
-        Logger.debug(`Reaction emoji: ${emojiName}`);
 
         // Get current guild info
         let guild = reaction.message.guild;
         if(!guild) return;
-        Logger.debug(`Guild ID: ${guild.id}`);
 
         let dbGuild = await Database.getGuild(guild.id);
         if(!dbGuild.starboard.enabled) return;
-        Logger.debug("Starboard is enabled for this guild.");
 
         // Check if the reaction emoji matches the starboard emoji
         if(emojiName !== dbGuild.starboard.emoji) return;
-        Logger.debug("Reaction emoji matches starboard emoji.");
 
         // Check if the reaction count meets the threshold
         let reactionCount = reaction.count || 0;
         if(reactionCount < dbGuild.starboard.threshold) return;
-        Logger.debug(`Reaction count (${reactionCount}) meets the threshold (${dbGuild.starboard.threshold}).`);
 
         // Fetch the starboard channel
         let starboardChannelId = dbGuild.starboard.channel;
         if(!starboardChannelId) return;
-        Logger.debug(`Starboard Channel ID: ${starboardChannelId}`);
 
         // if starboard channel is the same as the message channel, return
         if(starboardChannelId === reaction.message.channelId) return;
-        Logger.debug("Starboard channel is different from the message channel.");
 
         try{
             let starboardChannel = await guild.channels.fetch(starboardChannelId);
             if(!starboardChannel || !starboardChannel.isTextBased()) return;
-            Logger.debug("Starboard channel fetched successfully.");
 
             // Post to starboard
             await PostToStarboard(reaction, starboardChannel as TextChannel, dbGuild);
         }
         catch(err){
             Logger.error("Error fetching starboard channel or posting to starboard:" + err);
-
             // Could not fetch starboard channel, possibly deleted or missing permissions
             // Disable starboard in the database
             dbGuild.starboard.enabled = false;

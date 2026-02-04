@@ -1,6 +1,7 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, ContainerBuilder, InteractionResponseType, MessageFlags, SectionBuilder, SeparatorBuilder, SlashCommandSubcommandBuilder, TextDisplayBuilder, ThumbnailBuilder, User } from "discord.js";
 import Database from "../../../../Modules/Database";
 import TextParser from "../../../../Modules/TextParser";
+import Logger from "../../../../Modules/Logger";
 
 type Card = {
     suit: string;
@@ -192,11 +193,13 @@ module.exports = {
                     dbUser.economy.balance = `${BigInt(dbUser.economy.balance) + BigInt(betAmount)}`;
                     await dbUser.save();
                     FinalBoard.addTextDisplayComponents(new TextDisplayBuilder().setContent(`## :tada: You win! You won **${TextParser.BigIntComma(betAmount)} coins**!\n${TextParser.NumDiffBigInt(balance, dbUser.economy.balance)}`));
+                    Logger.info(`User ${interaction.user.id} won ${betAmount} coins in blackjack.`);
                 } else if(playerTotal < dealerTotal) {
                     // Dealer wins
                     dbUser.economy.balance = `${BigInt(dbUser.economy.balance) - BigInt(betAmount)}`;
                     await dbUser.save();
                     FinalBoard.addTextDisplayComponents(new TextDisplayBuilder().setContent(`## :x: You lose! You lost **${TextParser.BigIntComma(betAmount)} coins**.\n${TextParser.NumDiffBigInt(balance, dbUser.economy.balance)}`));
+                    Logger.info(`User ${interaction.user.id} lost ${betAmount} coins in blackjack.`);
                 } else {
                     // Push
                     FinalBoard.addTextDisplayComponents(new TextDisplayBuilder().setContent(`## :handshake: It's a push! Your bet has been returned.`));
@@ -204,7 +207,9 @@ module.exports = {
                 await i.update({ 
                     components: [FinalBoard],
                 });
+
             }
         });
+
     }
 }

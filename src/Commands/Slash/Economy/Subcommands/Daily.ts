@@ -1,6 +1,7 @@
 import { ChatInputCommandInteraction, ContainerBuilder, MessageFlags, SectionBuilder, SlashCommandSubcommandBuilder, TextDisplayBuilder, ThumbnailBuilder } from "discord.js";
 import Database from "../../../../Modules/Database";
 import TextParser from "../../../../Modules/TextParser";
+import Logger from "../../../../Modules/Logger";
 
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
@@ -49,7 +50,6 @@ You received your daily reward of **${TextParser.BigIntComma(earnings)} coins**!
 ${TextParser.NumDiffBigInt(balance, dbUser.economy.balance)}`))
             .setThumbnailAccessory(new ThumbnailBuilder().setURL(interaction.user.displayAvatarURL({ size: 256})))
         );
-
         await interaction.reply({ 
             components: [Response],
             flags: [MessageFlags.IsComponentsV2]

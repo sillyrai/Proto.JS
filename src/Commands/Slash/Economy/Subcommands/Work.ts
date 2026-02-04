@@ -1,6 +1,7 @@
 import { ChatInputCommandInteraction, ContainerBuilder, MessageFlags, SectionBuilder, SlashCommandSubcommandBuilder, TextDisplayBuilder, ThumbnailBuilder } from "discord.js";
 import Database from "../../../../Modules/Database";
 import TextParser from "../../../../Modules/TextParser";
+import Logger from "../../../../Modules/Logger";
 
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
@@ -54,5 +55,7 @@ ${TextParser.NumDiffBigInt(balance, dbUser.economy.balance)}`))
             components: [Response],
             flags: [MessageFlags.IsComponentsV2]
         });
+
+        Logger.info(`${interaction.user.id} worked and earned ${TextParser.BigIntComma(earnings)} coins.`);
     }
 }

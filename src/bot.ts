@@ -39,4 +39,12 @@ WelcomerHandler(client);
 VoteHandler(client);
 RandomStatusHandler(client);
 
+process.on('uncaughtException', (err) => {
+    Logger.fatal(`Uncaught Exception: ${err.message}\n${err.stack}`);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    Logger.fatal(`Unhandled Rejection at: ${promise}\nReason: ${reason}`);
+});
+
 client.login(process.env.DISCORD_TOKEN);
