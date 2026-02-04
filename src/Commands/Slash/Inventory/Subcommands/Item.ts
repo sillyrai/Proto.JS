@@ -7,13 +7,15 @@ module.exports = {
         .setName("item")
         .setDescription("🎒 Use an item from your inventory")
         .addStringOption(option => 
-            option.setName("item_id")
+            option.setName("inventory_item")
                 .setDescription("The ID of the item to use (you can view item IDs in your inventory)")
-                .setRequired(true)),
+                .setRequired(true)
+                .setAutocomplete(true)
+            ),
                 
                 
     async execute(interaction: ChatInputCommandInteraction) {
-        const itemId = interaction.options.getString("item_id", true);
+        const itemId = interaction.options.getString("inventory_item", true);
 
         // Check if user has the item, item name is equal to _id
         let dbUser = await Database.getUser(interaction.user.id);

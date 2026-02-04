@@ -100,13 +100,19 @@ Page ${page + 1}/${Math.ceil(items.length / ITEMS_PER_PAGE)}`));
             const itemId = i.customId.replace('buy_item_', '');
             let dbItem = await Database.getItem(itemId);
             if(!dbItem) {
-                await i.reply({ content: `Item not found in database.`, ephemeral: true });
+                await i.reply({ 
+                    content: `Item not found in database.`, 
+                    flags: [MessageFlags.Ephemeral]
+                });
                 return;
             }
 
             let dbUser = await Database.getUser(interaction.user.id);
             if(BigInt(dbUser.economy.balance) < BigInt(dbItem.prices.buy)) {
-                await i.reply({ content: `You don't have enough coins to buy **${dbItem.info.name}**.`, ephemeral: true });
+                await i.reply({ 
+                    content: `You don't have enough coins to buy **${dbItem.info.name}**.`,
+                    flags: [MessageFlags.Ephemeral]
+                });
                 return;
             }
 
@@ -119,7 +125,10 @@ Page ${page + 1}/${Math.ceil(items.length / ITEMS_PER_PAGE)}`));
                 dbUser.economy.inventory.push({ _id: itemId, quantity: "1" });
             }
             await dbUser.save();
-            await i.reply({ content: `You have successfully purchased **${dbItem.info.name}** for **${dbItem.prices.buy} coins**!`, ephemeral: true });
+            await i.reply({ 
+                content: `You have successfully purchased **${dbItem.info.name}** for **${dbItem.prices.buy} coins**!`, 
+                flags: [MessageFlags.Ephemeral] 
+            });
         });
     }
 }

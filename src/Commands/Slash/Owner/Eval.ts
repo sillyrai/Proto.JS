@@ -1,5 +1,6 @@
 import { ApplicationIntegrationType, ChatInputCommandInteraction, ContainerBuilder, InteractionContextType, Message, MessageFlags, SectionBuilder, SeparatorBuilder, SlashCommandBuilder, TextDisplayBuilder, ThumbnailBuilder } from "discord.js";
 import TextParser from "../../../Modules/TextParser";
+import Database from "../../../Modules/Database";
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -46,6 +47,35 @@ module.exports = {
             });
             return;
         }
+
+        // Helper functions to use in eval
+        const giveItem = async (userId: string, itemId: string, quantity: string = "1") => {
+            let dbUser = await Database.getUser(userId);
+            let inventoryItem = dbUser.economy.inventory.find(i => i._id === itemId);
+            if(inventoryItem) {
+                inventoryItem.quantity = (BigInt(inventoryItem.quantity) + BigInt(quantity)).toString();
+            } else {
+                dbUser.economy.inventory.push({ _id: itemId, quantity: quantity });
+            }
+            await dbUser.save();
+            return "Gave " + quantity + " of item " + itemId + " to user " + userId;
+        };
+
+        const setMoney = async (userId: string, amount: string) => {
+            let dbUser = await Database.getUser(userId);
+            dbUser.economy.balance = amount;
+            await dbUser.save();
+            return "Set money of user " + userId + " to " + amount;
+        }
+
+        const createItem = async (id:string, name:string, description:string="No Description", buyPrice:string="0", sellPrice:string="0", consumable:boolean=false, onsale:boolean=false) => {
+            let existingItem = await Database.getItem(id);
+            if(existingItem) {
+                return "Item with ID " + id + " already exists.";
+            }
+            let result = await Database.createItem(id,name,description,BigInt(buyPrice),BigInt(sellPrice),consumable,onsale);
+            return "Created item with ID " + id + ": " + result;
+        };
 
         try {
             let evaled = await eval(code);

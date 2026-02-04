@@ -7,6 +7,7 @@ import StarboardHandler from './Handlers/StarboardHandler';
 import WelcomerHandler from './Handlers/WelcomerHandler';
 import VoteHandler from './Handlers/VoteHandler';
 import RandomStatusHandler from './Handlers/RandomStatusHandler';
+import AutocompleteHandler from './Handlers/AutocompleteHandler';
 
 const client = new Client({
     intents: [
@@ -38,6 +39,7 @@ StarboardHandler(client);
 WelcomerHandler(client);
 VoteHandler(client);
 RandomStatusHandler(client);
+AutocompleteHandler(client);
 
 process.on('uncaughtException', (err) => {
     Logger.fatal(`Uncaught Exception: ${err.message}\n${err.stack}`);
