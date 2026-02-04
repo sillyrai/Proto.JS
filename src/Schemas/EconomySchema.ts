@@ -8,7 +8,7 @@ let CooldownSchema = new Schema({
 
 let InventoryItemSchema = new Schema({
     _id: { type: String, required: true },
-    quantity: { type: Number, default: 0 }
+    quantity: { type: String, default: "0" } // Using string to store bigint
 }, { versionKey: false, _id: false });
 
 let EconomySchema = new Schema({

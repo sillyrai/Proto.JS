@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import StarboardHandler from './Handlers/StarboardHandler';
 import WelcomerHandler from './Handlers/WelcomerHandler';
 import VoteHandler from './Handlers/VoteHandler';
+import RandomStatusHandler from './Handlers/RandomStatusHandler';
 
 const client = new Client({
     intents: [
@@ -20,7 +21,7 @@ const client = new Client({
         Partials.Message,
         Partials.Reaction,
         Partials.Channel,
-        Partials.GuildMember
+        Partials.GuildMember,
     ]
 });
 
@@ -36,5 +37,6 @@ SlashCommandHandler(client);
 StarboardHandler(client);
 WelcomerHandler(client);
 VoteHandler(client);
+RandomStatusHandler(client);
 
 client.login(process.env.DISCORD_TOKEN);

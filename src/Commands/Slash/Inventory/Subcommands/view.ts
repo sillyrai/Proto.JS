@@ -1,5 +1,6 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, ContainerBuilder, MessageFlags, SectionBuilder, SeparatorBuilder, SlashCommandSubcommandBuilder, TextDisplayBuilder } from "discord.js";
 import Database from "../../../../Modules/Database";
+import TextParser from "../../../../Modules/TextParser";
 
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
@@ -44,7 +45,7 @@ Page ${page + 1}/${Math.ceil(inventory.length / ITEMS_PER_PAGE)}`));
                 itemSection.setContent(`ID: \`${item._id}\`
 **Name**: ${name}
 **Description**: ${description}
-**Quantity**: ${item.quantity}`);
+**Quantity**: ${TextParser.SizeSuffix(item.quantity)}`);
                 
                 Response.addTextDisplayComponents(itemSection);
                 Response.addSeparatorComponents(new SeparatorBuilder());

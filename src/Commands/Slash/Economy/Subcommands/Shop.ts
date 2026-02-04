@@ -114,9 +114,9 @@ Page ${page + 1}/${Math.ceil(items.length / ITEMS_PER_PAGE)}`));
             dbUser.economy.balance = (BigInt(dbUser.economy.balance) - BigInt(dbItem.prices.buy)).toString();
             let inventoryItem = dbUser.economy.inventory.find(it => it._id === itemId);
             if(inventoryItem) {
-                inventoryItem.quantity += 1;
+                inventoryItem.quantity = (BigInt(inventoryItem.quantity) + BigInt(1)).toString();
             } else {
-                dbUser.economy.inventory.push({ _id: itemId, quantity: 1 });
+                dbUser.economy.inventory.push({ _id: itemId, quantity: "1" });
             }
             await dbUser.save();
             await i.reply({ content: `You have successfully purchased **${dbItem.info.name}** for **${dbItem.prices.buy} coins**!`, ephemeral: true });

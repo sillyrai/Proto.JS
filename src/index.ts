@@ -16,19 +16,6 @@ manager.on('shardCreate', shard => Logger.info(`Launched shard ${shard.id}`));
 Logger.debug('Starting shard manager...');
 manager.spawn();
 
+import { startServer } from './Web/Handler';
 
-// API Server
-import express from 'express';
-let app = express();
-app.use(express.json());
-
-app.post('/vote',  async (req, res) => {
-    let WC = new WebhookClient({url: process.env.VOTE_WEBHOOK!});
-    let voteData = req.body;
-    await WC.send(JSON.stringify(voteData));
-    res.status(200).send('Vote received');
-})
-
-app.listen(3000, () => {
-    Logger.info('Vote API server is running on port 3000');
-})
+startServer(3000);

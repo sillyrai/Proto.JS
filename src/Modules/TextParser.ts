@@ -82,9 +82,48 @@ ${sign} ${this.BigIntComma(absDiff)}
         }
     },
 
-    SizeSuffix(num: bigint): string {
-        const suffixes = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Oc", "No", "De", "Ud", "Dd", "Td", "Qt", "Qi", "Sxt", "Oct", "Not", "Vg", "Uv", "Dv", "Tv", "QtV", "QiV", "SxtV", "OctV", "NotV"];
-        let size = num;
+    SizeSuffix(num: bigint|string): string {
+        const suffixes = [
+            "",  // No suffix for numbers less than 1000
+            "K", // Thousand
+            "M", // Million
+            "B", // Billion
+            "T", // Trillion
+            "Qa", // Quadrillion
+            "Qi", // Quintillion
+            "Sx", // Sextillion
+            "Sp", // Septillion
+            "Oc", // Octillion
+            "No", // Nonillion
+            "Dc", // Decillion
+            "Ud", // Undecillion
+            "Dd", // Duodecillion
+            "Td", // Tredecillion
+            "Qad", // Quattuordecillion
+            "Qid", // Quindecillion
+            "Sxd", // Sexdecillion
+            "Spd", // Septendecillion
+            "Ocd", // Octodecillion
+            "Nod", // Novemdecillion
+            "Vg", // Vigintillion
+            "Uvg", // Unvigintillion
+            "Dvg", // Duovigintillion
+            "Tvg", // Trigintillion
+            "Qavg", // Quattuorvigintillion
+            "Qivg", // Quinvigintillion
+            "Sxvg", // Sexvigintillion
+            "Spvg", // Septenvigintillion
+            "Ocvg", // Octovigintillion
+            "Novg", // Novemvigintillion            
+            "Tg", // Trigintillion
+            "Utg", // Untrigintillion
+            "Dtg", // Duotrigintillion
+            "Ttg", // Tretrigintillion
+            "Qatg", // Quattuortrigintillion
+            "Qitg", // Quintrigintillion
+            "Sxtg", // Sextrigintillion
+        ];
+        let size = typeof num === "string" ? BigInt(num) : num;
         let suffixIndex = 0;
         while (size >= 1000n && suffixIndex < suffixes.length - 1) {
             size /= 1000n;

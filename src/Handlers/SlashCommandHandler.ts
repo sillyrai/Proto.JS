@@ -54,6 +54,8 @@ export default function(client: Client) {
         }
     }
 
+    (client as any).commands = commands;
+
     client.on(Events.InteractionCreate, async (interaction: Interaction) => {
         if (!interaction.isChatInputCommand()) return;
 

@@ -36,8 +36,8 @@ module.exports = {
         // if item is consumable, reduce quantity by 1 or remove from inventory
         if(!actualItem?.consumable) return;
         // If user has more than 1 of the item, reduce quantity by 1, else remove item from inventory
-        if(inventoryItem.quantity > 1)
-            inventoryItem.quantity -= 1;
+        if(BigInt(inventoryItem.quantity) > 1)
+            inventoryItem.quantity = (BigInt(inventoryItem.quantity) - BigInt(1)).toString();
         else 
             dbUser.economy.inventory.pull({ _id: itemId });
 
