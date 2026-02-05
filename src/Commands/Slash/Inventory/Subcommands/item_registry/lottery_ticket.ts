@@ -15,7 +15,7 @@ module.exports = {
             reward = 1000;
         else if (rand < 20)
             reward = 500;
-        else if (rand < 45)
+        else if (rand < 30)
             reward = 100;
         let Container = new ContainerBuilder()
         Container.addTextDisplayComponents(new TextDisplayBuilder().setContent(`## :ticket: You used a lottery ticket!`));

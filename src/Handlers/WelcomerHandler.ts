@@ -5,6 +5,7 @@ import Database from "../Modules/Database";
 function ConvertVariables(member:GuildMember|PartialGuildMember, message:string):string {
     /* Variable conversions
     {user.username} - The username of the user
+    {user.name} - The username of the user (for backward compatibility)
     {user.mention} - The mention of the user
     {user.displayName} - The display name of the user
     {user.id} - The ID of the user
@@ -13,11 +14,11 @@ function ConvertVariables(member:GuildMember|PartialGuildMember, message:string)
     {guild.name} - The name of the server
     {guild.memberCount} - The member count of the server
     {guild.id} - The ID of the server
-    
     */
     let guild = member.guild;
 
     message = message.replace(/{user\.username}/g, member.user?.username || 'Unknown User');
+    message = message.replace(/{user\.name}/g, member.user?.username || 'Unknown User'); // backward compatibility
     message = message.replace(/{user\.mention}/g, `<@${member.id}>`);
     message = message.replace(/{user\.displayName}/g, member.displayName || member.user?.username || 'Unknown User');
     message = message.replace(/{user\.id}/g, member.id);

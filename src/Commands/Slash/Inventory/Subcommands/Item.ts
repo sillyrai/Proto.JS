@@ -29,7 +29,9 @@ module.exports = {
         
         // check if item exists in registry (__dirname/item_registy/{_id}.ts)
         if(fs.existsSync(`${__dirname}/item_registry/${itemId}.ts`)) {
-            let itemModule = require(`${__dirname}/item_registry/${itemId}.ts`);
+            const modulePath = `${__dirname}/item_registry/${itemId}.ts`;
+            delete require.cache[require.resolve(modulePath)];
+            let itemModule = require(modulePath);
             await itemModule.execute(interaction, actualItem, dbUser);
         } else {
             await interaction.reply({ content: `The item **${itemId}** is not usable.`, ephemeral: false });

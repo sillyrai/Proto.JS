@@ -41,7 +41,6 @@ module.exports = {
             "Very doubtful, like your chances of winning the lottery.",
             "Without a doubt... unless Tuesday.",
             "Yes - definitely. Probably. Ideally.",
-            "You may rely on it, like a sturdy chair.",
             "Most likely to happen when pigs fly.",
             "Cannot predict now, I'm watching Netflix.",
             "My reply is no, and stop asking.",
@@ -50,7 +49,21 @@ module.exports = {
             "It is decidedly so... confusing.",
             "I think I'm gonna call the police for this question.",
             "Hell yeah!",
-            "Hell nah!"
+            "Hell nah!",
+            "Yes, absolutely!",
+            "The stars say yes.",
+            "You can bet on it.",
+            "Go for it!",
+            "Positively!",
+            "Without a doubt.",
+            "Looks promising!",
+            "100% yes.",
+            "The universe nods in agreement.",
+            "Consider it done.",
+            "Is this even a question? YES!!!",
+            "Always and forever is going to be true.",
+            ":+1:",
+            "The opposite of no",
         ];
 
         const question = interaction.options.getString("message", true);

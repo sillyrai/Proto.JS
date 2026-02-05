@@ -65,7 +65,7 @@ module.exports = {
         const Response = new ContainerBuilder()
         Response.addTextDisplayComponents(
             new TextDisplayBuilder()
-                .setContent(`### <:cathug:1468240313851183239> ${response}`)
+                .setContent(`### <:cathug:1468702278105042984> ${response}`)
         );
 
         if (selectedGif) {

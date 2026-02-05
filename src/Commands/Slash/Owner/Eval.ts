@@ -1,6 +1,7 @@
-import { ApplicationIntegrationType, ChatInputCommandInteraction, ContainerBuilder, InteractionContextType, Message, MessageFlags, SectionBuilder, SeparatorBuilder, SlashCommandBuilder, TextDisplayBuilder, ThumbnailBuilder } from "discord.js";
+import { ApplicationIntegrationType, ChatInputCommandInteraction, ContainerBuilder, InteractionCallbackResource, InteractionContextType, Message, MessageFlags, SectionBuilder, SeparatorBuilder, SlashCommandBuilder, TextDisplayBuilder, ThumbnailBuilder } from "discord.js";
 import TextParser from "../../../Modules/TextParser";
 import Database from "../../../Modules/Database";
+import Logger from "../../../Modules/Logger";
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -76,6 +77,26 @@ module.exports = {
             let result = await Database.createItem(id,name,description,BigInt(buyPrice),BigInt(sellPrice),consumable,onsale);
             return "Created item with ID " + id + ": " + result;
         };
+
+        // Return the guilds with the most members and their id
+        // ID - memberCount
+        function topServers(limit: number = 10) {
+            let resp = "";
+            let guilds = interaction.client.shard?.broadcastEval((client) => {
+                return client.guilds.cache.map(guild => ({ id: guild.id, memberCount: guild.memberCount }));
+            }) || Promise.resolve([]);
+            return guilds.then(results => {
+                let allGuilds: { id: string, memberCount: number }[] = [];
+                for(const guildList of results) {
+                    allGuilds = allGuilds.concat(guildList as { id: string, memberCount: number }[]);
+                }
+                allGuilds.sort((a, b) => b.memberCount - a.memberCount);
+                allGuilds.slice(0, limit).forEach(guild => {
+                    resp += `ID: ${guild.id} - Members: ${guild.memberCount}\n`;
+                });
+                return resp;
+            });
+        }
 
         try {
             let evaled = await eval(code);

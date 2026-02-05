@@ -11,7 +11,8 @@ export default async function(client: Client) {
             `rawr :3`,
             `boops u`,
             `beep boop!`,
-            "BETA VERSION, PLEASE REPORT ANY BUGS @ .gg/s4sSpxn5Hu"
+            "BETA VERSION, PLEASE REPORT ANY BUGS @ .gg/s4sSpxn5Hu",
+            "☕ a cat has left this hot cocoa for you :3"
         ];
 
         setInterval(() => {
