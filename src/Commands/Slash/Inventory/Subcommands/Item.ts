@@ -8,7 +8,7 @@ module.exports = {
         .setDescription("🎒 Use an item from your inventory")
         .addStringOption(option => 
             option.setName("inventory_item")
-                .setDescription("The ID of the item to use (you can view item IDs in your inventory)")
+                .setDescription("The ID of the item to use")
                 .setRequired(true)
                 .setAutocomplete(true)
             ),

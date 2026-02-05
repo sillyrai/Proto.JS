@@ -1,7 +1,8 @@
-import { ChatInputCommandInteraction, SlashCommandSubcommandBuilder, ChannelType, ContainerBuilder, TextDisplayBuilder, SeparatorBuilder, MessageFlags } from "discord.js";
-import fs from "fs"
+import { ChatInputCommandInteraction, SlashCommandSubcommandBuilder } from "discord.js";
+import fs from "fs";
 import Logger from "../../../../Modules/Logger";
 import sharp from "sharp";
+import ffmpeg from "fluent-ffmpeg";
 
 module.exports = {
     data: new SlashCommandSubcommandBuilder()
@@ -13,11 +14,11 @@ module.exports = {
                 .setRequired(true))
         .addUserOption(option => 
             option.setName("user")
-                .setDescription("The user to create a deepfried image of")
+                .setDescription("The user to create a captioned image of")
                 .setRequired(false))
         .addAttachmentOption(option => 
             option.setName("image")
-                .setDescription("The image to create a deepfried image of")
+                .setDescription("The image to create a captioned image of")
                 .setRequired(false)),
                 
     async execute(interaction: ChatInputCommandInteraction) {
@@ -31,41 +32,74 @@ module.exports = {
         if(attachment) {
             imageUrl = attachment.url;
         } else if(userOption) {
-            let userAvatarUrl = userOption.displayAvatarURL({ extension: "png", size: 256, forceStatic: true });
-            imageUrl = userAvatarUrl;
+            // Remove forceStatic to allow GIFs
+            imageUrl = userOption.displayAvatarURL({ size: 512 });
         } else {
-            imageUrl = interaction.user.displayAvatarURL({ extension: "png", size: 256, forceStatic: true });
+            // Remove forceStatic to allow GIFs
+            imageUrl = interaction.user.displayAvatarURL({ size: 512 });
         }
 
         if(!imageUrl) {
-            return interaction.editReply("Could not determine an image to create a deepfried image of.");
+            return interaction.editReply("Could not determine an image.");
         }
 
-        Logger.debug(`Creating deepfried image for image URL: ${imageUrl}`);
+        Logger.debug(`Creating captioned image for ID ${interaction.id}`);
 
-        await fetch(imageUrl).then(async res =>  {
-            if(!res.ok) await interaction.editReply("Failed to fetch the image.");
-            // if file is 10+MB, reject
+        let inputFilePath = `${__dirname}/temp/input_${interaction.id}`; 
+        let isGif = false;
+
+        try {
+            const res = await fetch(imageUrl);
+            if(!res.ok) {
+                return interaction.editReply("Failed to fetch the image.");
+            }
+
             let contentLength = res.headers.get("content-length");
             if(contentLength && parseInt(contentLength) > 10 * 1024 * 1024) {
                 return interaction.editReply("The provided image is too large (max 10MB).");
             }
-            // if not image content-type, reject
+
+            // check content type for gif
             let contentType = res.headers.get("content-type");
             if(!contentType || !contentType.startsWith("image/")) {
                 return interaction.editReply("The provided attachment is not an image.");
             }
 
+            if (contentType.includes("gif") || imageUrl.endsWith(".gif")) {
+                isGif = true;
+                inputFilePath += ".gif";
+            } else {
+                inputFilePath += ".png";
+            }
+
             let buffer = await res.arrayBuffer();
-            fs.writeFileSync(`${__dirname}/temp/input_${interaction.id}.png`, Buffer.from(buffer));
-        })
+            fs.writeFileSync(inputFilePath, Buffer.from(buffer));
+        } catch (e) {
+            Logger.error(`Error downloading image: ${e}`);
+            return interaction.editReply("An error occurred while downloading the image.");
+        }
 
-        let image = sharp(`${__dirname}/temp/input_${interaction.id}.png`);
+        let width = 0;
+        try {
+            // Use sharp to get metadata (works for first frame of gif too)
+            // If sharp fails on animated gif, we might need another way, but usually it works.
+            let metadata = await sharp(inputFilePath, { animated: true }).metadata();
+            width = metadata.width!;
+            
+            // Double check if sharp detects it as animated (pages > 1) if we missed it
+            if(metadata.pages && metadata.pages > 1 && !isGif) {
+                 // It's actually a gif/animated webp but we saved as .png or treated as static?
+                 // ffmpeg is robust, but filename extension helps.
+                 // let's stick to our isGif detection from headers/url for now as it drives output format.
+            }
+        } catch (e) {
+            Logger.error(`Error reading image metadata: ${e}`);
+            if(fs.existsSync(inputFilePath)) fs.unlinkSync(inputFilePath);
+            return interaction.editReply("Invalid image format or unable to process.");
+        }
 
-        // White bar at the top with black text
+        // Generate Text Caption using SVG & Sharp
         let caption = interaction.options.getString("caption", true);
-        const metadata = await image.metadata();
-        const width = metadata.width!;
         const height = Math.floor(width / 5); // Height is 20% of width
         const fontSize = Math.floor(width / 10); // Font size scales with width
 
@@ -77,10 +111,10 @@ module.exports = {
 
         for (let i = 1; i < words.length; i++) {
             if (currentLine.length + 1 + words[i].length <= maxChars) {
-            currentLine += " " + words[i];
+                currentLine += " " + words[i];
             } else {
-            lines.push(currentLine);
-            currentLine = words[i];
+                lines.push(currentLine);
+                currentLine = words[i];
             }
         }
         lines.push(currentLine);
@@ -101,33 +135,56 @@ module.exports = {
             ${textElements}
         </svg>
         `;
-        let svgBuffer = Buffer.from(svgImage);
+        
+        const captionFilePath = `${__dirname}/temp/caption_${interaction.id}.png`;
+        const outputFilePath = `${__dirname}/temp/output_${interaction.id}.${isGif ? 'gif' : 'png'}`;
 
-        let captionImage = sharp(svgBuffer).png();
-        let captionMetadata = await captionImage.metadata();
+        try {
+            await sharp(Buffer.from(svgImage)).png().toFile(captionFilePath);
 
-        let imageMetadata = await image.metadata();
-        let combinedHeight = (imageMetadata.height || 0) + (captionMetadata.height || 0);
-        let combinedImage = sharp({
-            create: {
-                width: Math.max(imageMetadata.width || 0, captionMetadata.width || 0),
-                height: combinedHeight,
-                channels: 4,
-                background: { r: 0, g: 0, b: 0, alpha: 0 }
-            }
-        });
-        combinedImage.composite([
-            { input: await captionImage.toBuffer(), top: 0, left: 0 },
-            { input: await image.toBuffer(), top: captionMetadata.height || 0, left: 0 }
-        ]);
-        await combinedImage.png().toFile(`${__dirname}/temp/output_${interaction.id}.png`);
+            // Use ffmpeg to overlay (stack)
+            await new Promise<void>((resolve, reject) => {
+                let command = ffmpeg();
+                
+                command.input(inputFilePath);
+                command.input(captionFilePath);
+                
+                // Pad the video/image at the top, then overlay the caption
+                // [0:v] is input (image/gif), [1:v] is caption
+                command.complexFilter([
+                    `[0:v]pad=width=iw:height=ih+${finalHeight}:x=0:y=${finalHeight}:color=white[padded]`,
+                    `[padded][1:v]overlay=0:0`
+                ]);
 
-        await interaction.editReply({ 
-            content: "Here is your captioned image:",
-            files: [{ attachment: `${__dirname}/temp/output_${interaction.id}.png`, name: `captioned_${interaction.id}.png` }]
-        });
-        // Clean up temp files
-        fs.unlinkSync(`${__dirname}/temp/input_${interaction.id}.png`);
-        fs.unlinkSync(`${__dirname}/temp/output_${interaction.id}.png`);
+                if (isGif) {
+                    command.outputOptions([
+                        "-gifflags -offsetting"
+                        // removed pix_fmt to let ffmpeg auto-select best for gif, unless proven otherwise like in Pet.ts
+                    ]);
+                }
+
+                command.output(outputFilePath)
+                    .on("end", () => resolve())
+                    .on("error", (err) => reject(err))
+                    .run();
+            });
+
+            await interaction.editReply({ 
+                content: "Here is your captioned image:",
+                files: [{ 
+                    attachment: outputFilePath, 
+                    name: `captioned.${isGif ? 'gif' : 'png'}` 
+                }]
+            });
+
+        } catch (error) {
+            Logger.error(`Error processing caption image: ${error}`);
+            await interaction.editReply("An error occurred while processing the image.");
+        } finally {
+            // Cleanup
+            if (fs.existsSync(inputFilePath)) fs.unlinkSync(inputFilePath);
+            if (fs.existsSync(captionFilePath)) fs.unlinkSync(captionFilePath);
+            if (fs.existsSync(outputFilePath)) fs.unlinkSync(outputFilePath);
+        }
     }
 }

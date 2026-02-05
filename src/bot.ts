@@ -8,6 +8,7 @@ import WelcomerHandler from './Handlers/WelcomerHandler';
 import VoteHandler from './Handlers/VoteHandler';
 import RandomStatusHandler from './Handlers/RandomStatusHandler';
 import AutocompleteHandler from './Handlers/AutocompleteHandler';
+import GuildCreateHandler from './Handlers/GuildCreateHandler';
 
 const client = new Client({
     intents: [
@@ -40,6 +41,7 @@ WelcomerHandler(client);
 VoteHandler(client);
 RandomStatusHandler(client);
 AutocompleteHandler(client);
+GuildCreateHandler(client);
 
 process.on('uncaughtException', (err) => {
     Logger.fatal(`Uncaught Exception: ${err.message}\n${err.stack}`);

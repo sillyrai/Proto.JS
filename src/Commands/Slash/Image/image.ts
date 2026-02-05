@@ -2,7 +2,8 @@ import { ActionRowBuilder, ApplicationIntegrationType, ButtonBuilder, ButtonStyl
 let pet = require("./Subcommands/Pet");
 let deepfry = require("./Subcommands/Deepfry");
 let caption = require("./Subcommands/Caption");
-
+let quote = require("./Subcommands/Quote");
+let blur = require("./Subcommands/Blur");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("image")
@@ -20,6 +21,8 @@ module.exports = {
         .addSubcommand(pet.data)
         .addSubcommand(deepfry.data)
         .addSubcommand(caption.data)
+        .addSubcommand(quote.data)
+        .addSubcommand(blur.data)
         ,
 
     async execute(interaction: ChatInputCommandInteraction) {
@@ -61,5 +64,7 @@ vote for the bot on top.gg! (its free and only takes a few seconds!)`));
         if(subcommand === "pet") await pet.execute(interaction);
         if(subcommand === "deepfry") await deepfry.execute(interaction);
         if(subcommand === "caption") await caption.execute(interaction);
+        if(subcommand === "quote") await quote.execute(interaction);
+        if(subcommand === "blur") await blur.execute(interaction);
     }
 }

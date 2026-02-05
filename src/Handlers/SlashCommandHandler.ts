@@ -1,4 +1,4 @@
-import { Client, ChatInputCommandInteraction, Interaction, Events, Collection, SlashCommandBuilder } from 'discord.js';
+import { Client, ChatInputCommandInteraction, Interaction, Events, Collection, SlashCommandBuilder, ContainerBuilder, TextDisplayBuilder, SeparatorBuilder, ActionRow, ButtonBuilder, ActionRowBuilder, ButtonStyle, MessageFlags } from 'discord.js';
 import fs from 'fs';
 import path from 'path';
 import Logger from '../Modules/Logger';
@@ -71,13 +71,37 @@ export default function(client: Client) {
             if (interaction.options.getSubcommand(false)) {
                 args = `${chalk.yellow(interaction.options.getSubcommand())} ${interaction.options.data[0].options?.map(option => `${chalk.green(option.name)}:${chalk.greenBright(option.value)}`).join(", ")}`;
             }
-            Logger.debug(`${interaction.user.tag} ran ${chalk.yellow("/"+interaction.commandName)} ${args} in #${interaction.guild?.id || "DM"}`);
+            Logger.debug(`${interaction.user.tag} ran ${chalk.yellow("/"+interaction.commandName)} ${args} in #${interaction.guild?.id || "DM"}`, true);
         } catch (error) {
-            Logger.error(`Error executing ${interaction.commandName}: ${error}`);
+            Logger.error(`Error executing ${interaction.commandName}: ${error}`, true);
+
+            let ErrorResponse = new ContainerBuilder();
+            ErrorResponse.addTextDisplayComponents(new TextDisplayBuilder().setContent(`## :warning: Error!`))
+            ErrorResponse.addSeparatorComponents(new SeparatorBuilder());
+            ErrorResponse.addTextDisplayComponents(
+                new TextDisplayBuilder().setContent(`An error occured while executing this command!
+Details:
+\`\`\`
+${error instanceof Error ? error.stack : error}
+\`\`\``))
+            let ButtonRow = new ActionRowBuilder<ButtonBuilder>();
+            ButtonRow.addComponents(
+                new ButtonBuilder()
+                    .setLabel("Report Issue")
+                    .setStyle(ButtonStyle.Link)
+                    .setURL("https://discord.gg/URZjWdevk6")
+            );
+
             if (interaction.replied || interaction.deferred) {
-                await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+                await interaction.followUp({
+                    components: [ErrorResponse, ButtonRow],
+                    flags: [MessageFlags.IsComponentsV2]
+                })
             } else {
-                await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+                await interaction.reply({
+                    components: [ErrorResponse, ButtonRow],
+                    flags: [MessageFlags.IsComponentsV2, MessageFlags.Ephemeral]
+                });
             }
         }
     });

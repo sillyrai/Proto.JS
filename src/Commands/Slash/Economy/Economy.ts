@@ -8,6 +8,9 @@ let coinflip = require("./Subcommands/CoinFlip");
 let blackjack = require("./Subcommands/Blackjack");
 let leaderboard = require("./Subcommands/Leaderboard");
 let shop = require("./Subcommands/Shop");
+let sell = require("./Subcommands/Sell");
+let buy = require("./Subcommands/Buy");
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("economy")
@@ -29,7 +32,9 @@ module.exports = {
         .addSubcommand(coinflip.data)
         .addSubcommand(blackjack.data)
         .addSubcommand(leaderboard.data)
-        .addSubcommand(shop.data),
+        .addSubcommand(shop.data)
+        .addSubcommand(sell.data)
+        .addSubcommand(buy.data),
         
     async execute(interaction: ChatInputCommandInteraction) {
         const subcommand = interaction.options.getSubcommand();
@@ -43,5 +48,8 @@ module.exports = {
         else if(subcommand === "blackjack") await blackjack.execute(interaction);
         else if(subcommand === "leaderboard") await leaderboard.execute(interaction);
         else if(subcommand === "shop") await shop.execute(interaction);
+        else if(subcommand === "sell") await sell.execute(interaction);
+        else if(subcommand === "buy") await buy.execute(interaction);
+
     }
 }
