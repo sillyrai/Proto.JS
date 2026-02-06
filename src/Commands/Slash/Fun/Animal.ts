@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ApplicationIntegrationType, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, ContainerBuilder, InteractionContextType, MediaGalleryBuilder, MediaGalleryItemBuilder, MessageFlags, SectionBuilder, SeparatorBuilder, SlashCommandBuilder, TextDisplayBuilder, ThumbnailBuilder } from "discord.js";
+import { ActionRowBuilder, ApplicationIntegrationType, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, ContainerBuilder, InteractionContextType, MediaGalleryBuilder, MediaGalleryItemBuilder, MessageFlags, SectionBuilder, SeparatorBuilder, SlashCommandBuilder, TextDisplayBuilder, TextInputAssertions, ThumbnailBuilder } from "discord.js";
 import TextParser from "../../../Modules/TextParser";
 
 async function fetchAnimalUrl(animal_type:string): Promise<string> {
@@ -90,11 +90,40 @@ module.exports = {
 
         let imageUrl = await fetchAnimalUrl(animalType);
         let AnimalDisplay = new ContainerBuilder();
+        let emoji = "";
+        switch(animalType) {
+            case "dog":
+                emoji = "🐶";
+                break;
+            case "cat":
+                emoji = "🐱";
+                break;
+            case "fox":
+                emoji = "🦊";
+                break;
+            case "rabbit":
+                emoji = "🐰";
+                break;
+            case "raccoon":
+                emoji = "🦝";
+                break;
+            case "bear":
+                emoji = "🐻";
+                break;
+            case "serval":
+                emoji = "🐆";
+                break;
+            case "wolf":
+                emoji = "🐺";
+                break;
+            case "snow_leopard":
+                emoji = "❄️";
+                break;
+        }
 
-        AnimalDisplay.addTextDisplayComponents(new TextDisplayBuilder().setContent(`## ${animalType} 🐾`));
+        AnimalDisplay.addTextDisplayComponents(new TextDisplayBuilder().setContent(`## ${emoji} ${animalType} 🐾`));
         AnimalDisplay.addSeparatorComponents(new SeparatorBuilder());
-        AnimalDisplay.addMediaGalleryComponents(new MediaGalleryBuilder()
-        .addItems(new MediaGalleryItemBuilder().setURL(imageUrl)));
+        AnimalDisplay.addMediaGalleryComponents(new MediaGalleryBuilder().addItems(new MediaGalleryItemBuilder().setURL(imageUrl)));
 
         let ButtonRow = new ActionRowBuilder<ButtonBuilder>();
         let NewImageButton = new ButtonBuilder()
@@ -120,10 +149,9 @@ module.exports = {
                 let newImageUrl = await fetchAnimalUrl(animalType);
                 let Container = new ContainerBuilder();
 
-                Container.addTextDisplayComponents(new TextDisplayBuilder().setContent(`## ${animalType} 🐾`));
+                Container.addTextDisplayComponents(new TextDisplayBuilder().setContent(`## ${emoji} ${animalType} 🐾`));
                 Container.addSeparatorComponents(new SeparatorBuilder());
-                Container.addMediaGalleryComponents(new MediaGalleryBuilder()
-                .addItems(new MediaGalleryItemBuilder().setURL(newImageUrl)));
+                Container.addMediaGalleryComponents(new MediaGalleryBuilder().addItems(new MediaGalleryItemBuilder().setURL(newImageUrl)));
                 Container.addActionRowComponents(ButtonRow);
 
                 await i.update({ 

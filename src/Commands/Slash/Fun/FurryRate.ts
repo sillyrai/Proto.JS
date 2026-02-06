@@ -22,8 +22,8 @@ module.exports = {
     async execute(interaction: ChatInputCommandInteraction) {
         let targetUser = interaction.options.getUser("user") || interaction.user;
 
-        // Random number between 0 and 110 (110 for funny)
-        let rate = Math.floor(Math.random() * 111);
+        // Random number between 0 and 150 (150 for funny)
+        let rate = Math.floor(Math.random() * 151);
 
         let Container = new ContainerBuilder();
         let FurredAnimalEmojis = ["🐶", "🐱", "🦊", "🐻", "🐼", "🐨", "🐯", "🦁", "🐮", "🐷", "🐸", "🐵", "🦄", "🐰", "🐹", "🐾"];

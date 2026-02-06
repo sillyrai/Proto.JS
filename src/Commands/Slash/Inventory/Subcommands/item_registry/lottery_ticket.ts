@@ -5,7 +5,9 @@ module.exports = {
         let rand = Math.random() * 100;
         Logger.info(`Lottery ticket roll: ${rand}`);
         let reward = 0;
-        if(rand < 0.01)
+        if(rand < 0.001)
+            reward = 100000;
+        else if(rand < 0.01)
             reward = 50000;
         else if (rand < 0.1)
             reward = 10000;
