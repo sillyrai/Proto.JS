@@ -1,7 +1,9 @@
 import { Client, Events } from "discord.js";
 import Database from "../Modules/Database";
+import ItemSchema from "../Schemas/ItemSchema";
 
 export default function(client: Client) {
+    // Inventory Item Autocomplete Handler
     client.on(Events.InteractionCreate, async (interaction) => {
         if(!interaction.isAutocomplete()) return;
 
@@ -29,6 +31,49 @@ export default function(client: Client) {
         // limit to maximum 25 choices
         choices = choices.slice(0, 25);
 
+        await interaction.respond(choices);
+    });
+
+    
+    // Fursona OC ID Autocomplete Handler
+    // If the user has entered a user option, then we should provide autocomplete suggestions based on that users fursonas, otherwise we should provide suggestions based on the command users fursonas
+    client.on(Events.InteractionCreate, async (interaction) => {
+        if(!interaction.isAutocomplete()) return;
+        if(interaction.options.getFocused(true).name !== "oc_id")
+            return;
+
+        let userOption = interaction.options.get("user");
+        let userId = (userOption?.value as string) || interaction.user.id;
+        let dbUser = await Database.getUser(userId);
+        let fursonas = dbUser.fursonas || [];
+
+        let focusedValue = interaction.options.getFocused();
+        let choices = fursonas.map(f => ({ name: `${f.name} - ${f.species || "Unknown Species"}`, value: f._id.toString() }));
+
+        // filter choices based on focused value
+        choices = choices.filter(choice => choice.name.toLowerCase().includes(focusedValue.toLowerCase()));
+
+        // limit to maximum 25 choices
+        choices = choices.slice(0, 25);
+
+        await interaction.respond(choices);
+    });
+
+
+    // shop_item autocomplete handler for shop commands
+    // Displays onsale items from the shop
+    client.on(Events.InteractionCreate, async (interaction) => {
+        if(!interaction.isAutocomplete()) return;
+        if(interaction.options.getFocused(true).name !== "shop_item")
+            return;
+
+        let shopItems = ItemSchema.find({ "onsale": true });
+        let focusedValue = interaction.options.getFocused();
+        let choices = (await shopItems).map(i => ({ name: i.info.name, value: i._id.toString() }));
+        // filter choices based on focused value
+        choices = choices.filter(choice => choice.name.toLowerCase().includes(focusedValue.toLowerCase()));
+        // limit to maximum 25 choices
+        choices = choices.slice(0, 25);
         await interaction.respond(choices);
     });
 }
