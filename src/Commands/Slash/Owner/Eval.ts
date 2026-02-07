@@ -98,6 +98,10 @@ module.exports = {
             });
         }
 
+        function dbUser(id: string) {
+            return Database.getUser(id);
+        }
+
         try {
             let evaled = await eval(code);
             if(typeof evaled !== "string") {
