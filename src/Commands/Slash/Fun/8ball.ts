@@ -39,8 +39,8 @@ module.exports = {
             "I don't think I can legally answer that",
             "Ew dude what the hell",
             "The answer is hidden in the stars, but I'm not gonna tell you what it is.",
-            "The spirits say... maybe? I dunno, ask again later.",
-            "The spirits are confused by your question, try asking something else.",
+            "maybe? I dunno, ask again later.",
+            "I am confused by your question, try asking something else.",
             "You should know the answer to that one already, just trust your instincts.",
             "You should probably ask someone else"
         ];
