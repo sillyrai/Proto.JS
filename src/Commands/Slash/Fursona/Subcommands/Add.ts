@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, ContainerBuilder, LabelBuilder, ModalBuilder, SlashCommandSubcommandBuilder, TextDisplayBuilder, TextInputBuilder, TextInputStyle, MessageFlags, FileUploadBuilder } from "discord.js";
+import { ChatInputCommandInteraction, ContainerBuilder, LabelBuilder, ModalBuilder, SlashCommandSubcommandBuilder, TextDisplayBuilder, TextInputBuilder, TextInputStyle, MessageFlags, FileUploadBuilder, MediaGalleryBuilder, MediaGalleryItemBuilder } from "discord.js";
 import Database from "../../../../Modules/Database";
 import FursonaSchema from "../../../../Schemas/FursonaSchema";
 module.exports = {
@@ -87,6 +87,21 @@ module.exports = {
 
         let Response = new ContainerBuilder();
         Response.addTextDisplayComponents(new TextDisplayBuilder().setContent(`Your fursona "${name}" has been added!\nYou can view it using the \`/fursona view\` command.`));
+        Response.addSeparatorComponents();
+
+        if(artwork){
+            if(artwork.size > 0) {
+                // Add gallery preview
+                let gallery = new MediaGalleryBuilder();
+
+                artwork.forEach(file => {
+                    gallery.addItems(new MediaGalleryItemBuilder().setURL(file.url));
+                });
+
+                Response.addMediaGalleryComponents(gallery);
+            }
+        }
+
         await submitted.reply({ 
             components: [Response],
             flags: [MessageFlags.IsComponentsV2]
