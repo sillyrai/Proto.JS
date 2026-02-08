@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx src/index.ts",
+    "css": "tailwindcss -i ./src/Web/css/styles.css -o ./src/Web/public/css/style.css --watch",
     "deploy:local": "tsx src/Scripts/DeployLocal.ts",
     "deploy:global": "tsx src/Scripts/DeployGlobal.ts",
     "deploy:clear": "tsx src/Scripts/ClearAll.ts"
@@ -15,6 +16,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@types/ejs": "^3.1.5",
     "@types/express": "^5.0.6",
     "@types/fluent-ffmpeg": "^2.1.28",
     "chalk": "^5.6.2",
@@ -27,6 +29,10 @@
     "sharp": "^0.34.5"
   },
   "devDependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "autoprefixer": "^10.4.24",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18",
     "tsx": "^4.21.0"
   }
 }

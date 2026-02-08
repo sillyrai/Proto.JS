@@ -4,6 +4,7 @@ let deepfry = require("./Subcommands/Deepfry");
 let caption = require("./Subcommands/Caption");
 let quote = require("./Subcommands/Quote");
 let blur = require("./Subcommands/Blur");
+let discord = require("./Subcommands/Discord");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("image")
@@ -23,6 +24,7 @@ module.exports = {
         .addSubcommand(caption.data)
         .addSubcommand(quote.data)
         .addSubcommand(blur.data)
+        .addSubcommand(discord.data)
         ,
 
     async execute(interaction: ChatInputCommandInteraction) {
@@ -66,5 +68,6 @@ vote for the bot on top.gg! (its free and only takes a few seconds!)`));
         if(subcommand === "caption") await caption.execute(interaction);
         if(subcommand === "quote") await quote.execute(interaction);
         if(subcommand === "blur") await blur.execute(interaction);
+        if(subcommand === "discord") await discord.execute(interaction);
     }
 }

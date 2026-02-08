@@ -18,4 +18,4 @@ manager.spawn();
 
 import { startServer } from './Web/Handler';
 
-startServer(3000);
+startServer(manager, 3000);

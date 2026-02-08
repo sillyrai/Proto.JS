@@ -12,7 +12,11 @@ export default async function(client: Client) {
             `boops u`,
             `beep boop!`,
             "BETA VERSION, PLEASE REPORT ANY BUGS @ .gg/s4sSpxn5Hu",
-            "☕ a cat has left this hot cocoa for you :3"
+            "☕ a cat has left this hot cocoa for you :3",
+            ">:3",
+            "meow meow meow!",
+            "owo whats this",
+            
         ];
 
         setInterval(() => {

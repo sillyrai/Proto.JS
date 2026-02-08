@@ -1,0 +1,15 @@
+<svg width="[WIDTH]" height="[HEIGHT]" viewBox="0 0 [WIDTH] [HEIGHT]" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<rect width="[WIDTH]" height="[HEIGHT]" fill="#1E1E1E"/>
+<g id="DiscordMessage">
+<rect width="[WIDTH]" height="[HEIGHT]" fill="#323339"/>
+<circle id="Ellipse 2" cx="168.5" cy="184.5" r="124.5" fill="url(#pattern0_0_1)"/>
+<text id="Message" fill="#D2D2D5" style="white-space: pre" xml:space="preserve" font-family="Arial" font-size="95" letter-spacing="-0.003em">[CONTENT_TSPANS]</text>
+<text id="Username" fill="white" style="white-space: pre" xml:space="preserve" font-family="Arial" font-size="95" letter-spacing="0em"><tspan x="391" y="139.435">[USERNAME] <tspan font-size="55" fill="#999AA1">[TIME]</tspan></tspan></text>
+</g>
+<defs>
+<pattern id="pattern0_0_1" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_0_1" transform="scale(0.25)"/>
+</pattern>
+<image id="image0_0_1" data-name="image.png" width="4" height="4" preserveAspectRatio="none" xlink:href="[IMAGE_BYTES]"/>
+</defs>
+</svg>
