@@ -116,7 +116,7 @@ module.exports = {
         const outputPath = `${tempDir}/discord_message_${interaction.id}.png`;
 
         try {
-            const avatarUrl = targetUser.displayAvatarURL({ extension: 'png', size: 512 });
+            const avatarUrl = targetUser.displayAvatarURL({ extension: 'png', size: 512, forceStatic: true });
             const res = await fetch(avatarUrl);
             if (!res.ok) {
                 return interaction.editReply("Failed to download the user's avatar.");
