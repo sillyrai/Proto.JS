@@ -37,6 +37,16 @@ module.exports = {
         Response.addSeparatorComponents(new SeparatorBuilder())
         Response.addTextDisplayComponents(new TextDisplayBuilder().setContent(`The ${type} message has been updated.`));
         
+        if(dbGuild.welcomer.enabled === false){
+            Response.addTextDisplayComponents(new TextDisplayBuilder().setContent(`⚠️ Note: The welcomer is currently disabled. Use \`/welcomer enabled true\` to enable it.`));
+        }
+
+        // if doesn't contain { or } then add note about variables
+        if (!message.includes("{") || !message.includes("}")) {
+            Response.addSeparatorComponents(new SeparatorBuilder())
+            Response.addTextDisplayComponents(new TextDisplayBuilder().setContent(`⚠️ Note: Your message doesn't contain any variables. The bot will not display who joined or left the server. run \`/welcomer help\` for more information on how to use variables in your messages.`));
+        }
+
         await interaction.editReply({ 
             components: [Response], 
             flags: [MessageFlags.IsComponentsV2] 

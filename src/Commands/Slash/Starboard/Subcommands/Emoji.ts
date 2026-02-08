@@ -30,6 +30,10 @@ module.exports = {
         Response.addSeparatorComponents(new SeparatorBuilder())
         Response.addTextDisplayComponents(new TextDisplayBuilder().setContent(`The starboard emoji has been set to ${emoji}.`));
 
+        if(dbGuild.starboard.enabled === false){
+            Response.addTextDisplayComponents(new TextDisplayBuilder().setContent(`⚠️ Note: The starboard is currently disabled. Use \`/starboard enabled true\` to enable it.`));
+        }
+
         await interaction.editReply({ 
             components: [Response],
             flags: [MessageFlags.IsComponentsV2]

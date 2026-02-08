@@ -24,6 +24,10 @@ module.exports = {
         Response.addSeparatorComponents(new SeparatorBuilder())
         Response.addTextDisplayComponents(new TextDisplayBuilder().setContent(`The welcomer channel has been updated.`));
         
+        if(dbGuild.welcomer.enabled === false){
+            Response.addTextDisplayComponents(new TextDisplayBuilder().setContent(`⚠️ Note: The welcomer is currently disabled. Use \`/welcomer enabled true\` to enable it.`));
+        }
+        
         await interaction.editReply({ 
             components: [Response], 
             flags: [MessageFlags.IsComponentsV2] 

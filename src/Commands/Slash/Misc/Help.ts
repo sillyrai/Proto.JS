@@ -35,7 +35,8 @@ module.exports = {
         BotInfo.addTextDisplayComponents(new TextDisplayBuilder().setContent(`# :blue_heart: Proto`));
         BotInfo.addTextDisplayComponents(new TextDisplayBuilder()
             .setContent(`Hi! I'm **Proto**, a general purpose bot made for furries by furries! 
-You can view what commands I have by typing \`/\` `));
+You can view what commands I have by typing \`/\`
+You can also install me onto your user account! Letting you use me in DMs and any other server without needing to invite me!`));
 
         let guildCount = interaction.client.shard ?
             (await interaction.client.shard.fetchClientValues('guilds.cache.size') as number[])

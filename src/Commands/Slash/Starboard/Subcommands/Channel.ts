@@ -23,6 +23,7 @@ module.exports = {
         Response.addTextDisplayComponents(new TextDisplayBuilder().setContent(`## ⭐ Starboard updated!`));
         Response.addSeparatorComponents(new SeparatorBuilder())
         Response.addTextDisplayComponents(new TextDisplayBuilder().setContent(`The starboard channel has been set to ${channel}.`));
+        
         if(dbGuild.starboard.enabled === false){
             Response.addTextDisplayComponents(new TextDisplayBuilder().setContent(`⚠️ Note: The starboard is currently disabled. Use \`/starboard enabled true\` to enable it.`));
         }

@@ -15,8 +15,11 @@ export async function PostToStarboard(reaction: MessageReaction | PartialMessage
     let Container = new ContainerBuilder();
     Container.addSectionComponents(new SectionBuilder()
         .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.author?.displayAvatarURL() || ''))
-        .addTextDisplayComponents(new TextDisplayBuilder().setContent(`# ${dbGuild.starboard.emoji} Starboard\n## Post by **${message.author}**`))
+        .addTextDisplayComponents(new TextDisplayBuilder().setContent(`# ${dbGuild.starboard.emoji} Starboard\n
+Post by **${message.author}**
+<t:${Math.floor(message.createdTimestamp / 1000)}:R>`))
     );
+    Container.setAccentColor(16361522);
     Container.addSeparatorComponents(new SeparatorBuilder())
 
     if(message.content) {
@@ -28,12 +31,14 @@ export async function PostToStarboard(reaction: MessageReaction | PartialMessage
         for(const attachment of message.attachments.values()){
                 if(attachment.contentType?.startsWith('image/') || attachment.contentType?.startsWith('video/'))
                     MediaGallery.addItems(new MediaGalleryItemBuilder().setURL(attachment.url));
-                MediaText += `\n[${attachment.name}](${attachment.url})`;
+                MediaText += `\n📑 [${attachment.name}](${attachment.url})`;
             }
     if(MediaGallery.items.length > 0)
         Container.addMediaGalleryComponents(MediaGallery);
-    if(MediaText.length > 0)
+    if(MediaText.length > 0){
+        Container.addSeparatorComponents(new SeparatorBuilder())
         Container.addTextDisplayComponents(new TextDisplayBuilder().setContent(MediaText));
+    }
 
     let ButtonRow = new ActionRowBuilder<ButtonBuilder>()
     ButtonRow.addComponents(
@@ -80,8 +85,12 @@ export default function(client: Client) {
         if(starboardChannelId === reaction.message.channelId) return;
 
         try{
-            let starboardChannel = await guild.channels.fetch(starboardChannelId);
+            let starboardChannel = await guild.channels.fetch(starboardChannelId) as TextChannel;
             if(!starboardChannel || !starboardChannel.isTextBased()) return;
+
+            // if starred message is in a nsfw channel and starboard channel is not nsfw, return
+            let reactionMessageChannel = await reaction.message.channel.fetch() as TextChannel;
+            if(reactionMessageChannel.nsfw && !starboardChannel.nsfw) return;
 
             // Post to starboard
             await PostToStarboard(reaction, starboardChannel as TextChannel, dbGuild);
