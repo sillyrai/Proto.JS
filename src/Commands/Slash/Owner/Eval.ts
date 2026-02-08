@@ -102,6 +102,21 @@ module.exports = {
             return Database.getUser(id);
         }
 
+        function getGlobalUserCount() {
+            let members = interaction.client.shard?.broadcastEval((client) => {
+                return client.guilds.cache.reduce((acc, guild) => {
+                    return acc + guild.memberCount;
+                }, 0);
+            }) || Promise.resolve([]);
+            return members.then(results => {
+                let totalMembers = 0;
+                for(const count of results) {
+                    totalMembers += count as number;
+                }
+                return totalMembers;
+            });
+        }
+
         try {
             let evaled = await eval(code);
             if(typeof evaled !== "string") {
