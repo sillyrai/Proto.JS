@@ -1,4 +1,5 @@
-import { ApplicationIntegrationType, ChatInputCommandInteraction, ContainerBuilder, InteractionContextType, MediaGalleryBuilder, MediaGalleryItemBuilder, MessageFlags, SectionBuilder, SeparatorBuilder, SlashCommandBuilder, TextDisplayBuilder, ThumbnailBuilder } from "discord.js";
+import { ApplicationIntegrationType, ChatInputCommandInteraction, ContainerBuilder, DefaultWebSocketManagerOptions, InteractionContextType, MediaGalleryBuilder, MediaGalleryItemBuilder, MessageFlags, SectionBuilder, SeparatorBuilder, SlashCommandBuilder, TextDisplayBuilder, ThumbnailBuilder } from "discord.js";
+import Database from "../../../Modules/Database";
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("boop")
@@ -64,6 +65,17 @@ module.exports = {
         BoopDisplay.addMediaGalleryComponents(new MediaGalleryBuilder()
             .addItems(new MediaGalleryItemBuilder().setURL(selectedGif))
         );
+
+        let dbUser = await Database.getUser(target.id);
+        dbUser.counters.boop += 1;
+        dbUser.save();
+
+        BoopDisplay.addSeparatorComponents(new SeparatorBuilder());
+        BoopDisplay.addTextDisplayComponents(
+            new TextDisplayBuilder()
+                .setContent(`-# ${target.username} has been booped ${dbUser.counters.boop} times!`)
+        );
+
         
         await interaction.reply({ 
             components: [BoopDisplay],

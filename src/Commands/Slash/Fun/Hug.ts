@@ -1,4 +1,5 @@
 import { ApplicationIntegrationType, ChatInputCommandInteraction, ContainerBuilder, InteractionContextType, MediaGalleryBuilder, MediaGalleryItemBuilder, MessageFlags, SectionBuilder, SeparatorBuilder, SlashCommandBuilder, TextDisplayBuilder, ThumbnailBuilder } from "discord.js";
+import Database from "../../../Modules/Database";
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("hug")
@@ -74,6 +75,16 @@ module.exports = {
                 .addItems(new MediaGalleryItemBuilder().setURL(selectedGif))
             );
         }
+
+        let dbUser = await Database.getUser(target.id);
+        dbUser.counters.hug += 1;
+        dbUser.save();
+
+        Response.addSeparatorComponents(new SeparatorBuilder());
+        Response.addTextDisplayComponents(
+            new TextDisplayBuilder()
+                .setContent(`-# ${target.username} has been hugged ${dbUser.counters.hug} times!`)
+        );
         
         await interaction.reply({ 
             components: [Response],

@@ -1,4 +1,5 @@
 import { ApplicationIntegrationType, ChatInputCommandInteraction, ContainerBuilder, InteractionContextType, MediaGalleryBuilder, MediaGalleryItemBuilder, MessageFlags, SeparatorBuilder, SlashCommandBuilder, TextDisplayBuilder } from "discord.js";
+import Database from "../../../Modules/Database";
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -69,6 +70,16 @@ module.exports = {
                 .addItems(new MediaGalleryItemBuilder().setURL(selectedGif))
             );
         }
+
+        let dbUser = await Database.getUser(target.id);
+        dbUser.counters.pat += 1;
+        dbUser.save();
+
+        responseDisplay.addSeparatorComponents(new SeparatorBuilder());
+        responseDisplay.addTextDisplayComponents(
+            new TextDisplayBuilder()
+                .setContent(`-# ${target.username} has been patted ${dbUser.counters.pat} times!`)
+        );
 
         await interaction.reply({
             components: [responseDisplay],
