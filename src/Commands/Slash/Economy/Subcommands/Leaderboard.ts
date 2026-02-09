@@ -15,6 +15,11 @@ module.exports = {
         // sort by length first, then by the string value to simulate numeric sort on strings
         let top10users = await UserSchema.aggregate([
             {
+                $match: {
+                    "economy.balance": { $not: /^-/ }
+                }
+            },
+            {
                 $addFields: {balanceLength: { $strLenCP: "$economy.balance" }}
             },
             {
