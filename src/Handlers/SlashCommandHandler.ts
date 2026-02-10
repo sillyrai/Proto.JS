@@ -71,7 +71,7 @@ export default function(client: Client) {
             if (interaction.options.getSubcommand(false)) {
                 args = `${chalk.yellow(interaction.options.getSubcommand())} ${interaction.options.data[0].options?.map(option => `${chalk.green(option.name)}:${chalk.greenBright(option.value)}`).join(", ")}`;
             }
-            Logger.debug(`${interaction.user.tag} ran ${chalk.yellow("/"+interaction.commandName)} ${args} in ${interaction.guild?.id || "DM"}`, true);
+            Logger.debug(`${interaction.user.tag} (${interaction.user.id}) ran ${chalk.yellow("/"+interaction.commandName)} ${args} in ${interaction.guild?.id || "DM"}`, true);
         } catch (error) {
             Logger.error(`Error executing ${interaction.commandName}: ${error}`, true);
 
