@@ -33,6 +33,10 @@ module.exports = {
             return await interaction.reply({ content: `You do not have enough balance to make this payment.\nYou tried to pay ${TextParser.BigIntComma(amount)} coins, you have ${TextParser.BigIntComma(BigInt(dbUser.economy.balance))} coins.`, flags: [MessageFlags.Ephemeral] });
         }
 
+        if(target.id === interaction.user.id){
+            return await interaction.reply({ content: `You cannot pay yourself.`, flags: [MessageFlags.Ephemeral] });
+        }
+
         let dbTarget = await Database.getUser(target.id);
 
         let balance = dbUser.economy.balance;
